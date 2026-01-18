@@ -10,24 +10,6 @@
   --bg: #fff3e0;
   --text: #4e342e;
   --card: #ffffff;
-}
-.dark {
-  --bg: #121212;
-  --text: #ffffff;
-  --card: #1e1e1e;
-}
-body {
-  margin: 0;
-  font-family: system-ui;
-  background: var(--bg);
-  color: var(--text);
-}
-.page { display: none; padding: 15px; }
-<style>
-:root {
-  --bg: #fff3e0;
-  --text: #4e342e;
-  --card: #ffffff;
   --nav: #ffffff;
   --border: #ddd;
 }
@@ -40,9 +22,7 @@ body {
   --border: #333;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -51,18 +31,14 @@ body {
   color: var(--text);
 }
 
-/* Pages */
 .page {
   display: none;
   padding: 16px;
-  padding-bottom: 90px; /* space for bottom nav */
+  padding-bottom: 90px;
 }
 
-.page.active {
-  display: block;
-}
+.page.active { display: block; }
 
-/* Cards */
 .card {
   background: var(--card);
   padding: 14px;
@@ -72,11 +48,6 @@ body {
   cursor: pointer;
 }
 
-.card b {
-  font-size: 16px;
-}
-
-/* Chant text */
 .big {
   text-align: center;
   font-size: 18px;
@@ -84,7 +55,6 @@ body {
   margin: 16px 0;
 }
 
-/* Tap area */
 .click-zone {
   height: 180px;
   background: rgba(0,0,0,0.06);
@@ -97,7 +67,6 @@ body {
   user-select: none;
 }
 
-/* Inputs */
 input, select, button {
   width: 100%;
   padding: 10px;
@@ -110,19 +79,16 @@ input, select, button {
 
 button {
   background: #ff9800;
-  color: #000;
   border: none;
   font-weight: 600;
 }
 
-/* Progress */
 progress {
   width: 100%;
   height: 18px;
   margin-top: 10px;
 }
 
-/* Table */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -132,15 +98,9 @@ table {
 th, td {
   border: 1px solid var(--border);
   padding: 8px;
-  text-align: left;
   font-size: 14px;
 }
 
-th {
-  background: rgba(0,0,0,0.05);
-}
-
-/* Bottom Navigation */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -154,8 +114,8 @@ th {
 
 .bottom-nav button {
   flex: 1;
-  border: none;
   background: none;
+  border: none;
   font-size: 22px;
 }
 </style>
@@ -163,83 +123,54 @@ th {
 
 <body>
 
-<!-- HOME -->
 <div id="home" class="page active"></div>
 
-<!-- ANALYTICS -->
 <div id="analytics" class="page">
-<h3>Analytics</h3>
-<table>
-<thead><tr><th>Date</th><th>Naam</th><th>Count</th></tr></thead>
-<tbody id="analyticsTable"></tbody>
-</table>
+  <h3>Analytics</h3>
+  <table>
+    <thead>
+      <tr><th>Date</th><th>Naam</th><th>Count</th></tr>
+    </thead>
+    <tbody id="analyticsTable"></tbody>
+  </table>
 </div>
 
-<!-- SETTINGS -->
 <div id="settings" class="page">
-<h3>Settings</h3>
+  <h3>Settings</h3>
 
-<label>Language</label>
-<select id="languageSelect">
-<option value="en">English</option>
-<option value="mr">Marathi</option>
-<option value="or">Odia</option>
-</select>
+  <label>Language</label>
+  <select id="languageSelect">
+    <option value="en">English</option>
+    <option value="mr">Marathi</option>
+    <option value="or">Odia</option>
+  </select>
 
-<br><br>
-<label>
-<input type="checkbox" id="darkToggle"> Dark Mode
-</label>
+  <label>
+    <input type="checkbox" id="darkToggle"> Dark Mode
+  </label>
 </div>
 
-<!-- CHANT PAGE -->
 <div id="chant" class="page"></div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-<button onclick="openPage('home')">🏠</button>
-<button onclick="openPage('analytics')">📊</button>
-<button onclick="openPage('settings')">⚙</button>
+  <button onclick="openPage('home')">🏠</button>
+  <button onclick="openPage('analytics')">📊</button>
+  <button onclick="openPage('settings')">⚙</button>
 </div>
 
 <script>
 const naamData = {
-  "Radha Naam": {
-    en: "Radha",
-    mr: "राधा",
-    or: "ରାଧା"
-  },
-  "Krishna Naam": {
-    en: "Krishna",
-    mr: "कृष्ण",
-    or: "କୃଷ୍ଣ"
-  },
-  "Ram Naam": {
-    en: "Ram",
-    mr: "राम",
-    or: "ରାମ"
-  },
+  "Radha Naam": { en:"Radha", mr:"राधा", or:"ରାଧା" },
+  "Krishna Naam": { en:"Krishna", mr:"कृष्ण", or:"କୃଷ୍ଣ" },
+  "Ram Naam": { en:"Ram", mr:"राम", or:"ରାମ" },
   "Hare Krishna MahaMantra": {
-    en: "Hare Krishna Hare Krishna Krishna Krishna Hare Hare\nHare Ram Hare Ram Ram Ram Hare Hare",
-    mr: "हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे\nहरे राम हरे राम राम राम हरे हरे",
-    or: "ହରେ କୃଷ୍ଣ ହରେ କୃଷ୍ଣ କୃଷ୍ଣ କୃଷ୍ଣ ହରେ ହରେ\nହରେ ରାମ ହରେ ରାମ ରାମ ରାମ ହରେ ହରେ"
+    en:"Hare Krishna Hare Krishna Krishna Krishna Hare Hare\nHare Ram Hare Ram Ram Ram Hare Hare",
+    mr:"हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे\nहरे राम हरे राम राम राम हरे हरे",
+    or:"ହରେ କୃଷ୍ଣ ହରେ କୃଷ୍ଣ କୃଷ୍ଣ କୃଷ୍ଣ ହରେ ହରେ\nହରେ ରାମ ହରେ ରାମ ରାମ ରାମ ହରେ ହରେ"
   },
-  "Ram Krishna Hari": {
-    en: "Ram Krishna Hari",
-    mr: "राम कृष्ण हरी",
-    or: "ରାମ କୃଷ୍ଣ ହରି"
-  },
-  "SitaRam": {
-    en: "Sita Ram",
-    mr: "सीता राम",
-    or: "ସୀତା ରାମ"
-  },
-  "RadhaKrishna": {
-    en: "Radha Krishna",
-    mr: "राधा कृष्ण",
-    or: "ରାଧା କୃଷ୍ଣ"
-  }
-  
+  "Ram Krishna Hari": { en:"Ram Krishna Hari", mr:"राम कृष्ण हरी", or:"ରାମ କୃଷ୍ଣ ହରି" },
+  "SitaRam": { en:"Sita Ram", mr:"सीता राम", or:"ସୀତା ରାମ" },
+  "RadhaKrishna": { en:"Radha Krishna", mr:"राधा कृष्ण", or:"ରାଧା କୃଷ୍ଣ" }
 };
 
 let state = JSON.parse(localStorage.getItem("naamjap")) || {
@@ -254,6 +185,10 @@ function save() {
   localStorage.setItem("naamjap", JSON.stringify(state));
 }
 
+function today() {
+  return new Date().toISOString().slice(0,10);
+}
+
 function openPage(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -264,12 +199,18 @@ function openPage(id) {
 function renderHome() {
   const home = document.getElementById("home");
   home.innerHTML = "<h3>NaamJap</h3>";
+
   Object.keys(naamData).forEach(n => {
-    state.counts[n] ??= 0;
+    state.counts[n] ??= { lifetime: 0, daily: {} };
+    const t = today();
+    const todayCount = state.counts[n].daily[t] || 0;
+    const life = state.counts[n].lifetime;
+
     home.innerHTML += `
       <div class="card" onclick="openChant('${n}')">
         <b>${naamData[n][state.language]}</b><br>
-        Count: ${state.counts[n]}
+        Today: ${todayCount}<br>
+        Lifetime: ${life}
       </div>`;
   });
   save();
@@ -277,29 +218,38 @@ function renderHome() {
 
 function openChant(name) {
   openPage("chant");
-  const t = state.targets[name] || {};
+  const tday = today();
+  const c = state.counts[name];
+  const target = state.targets[name] || {};
+
   document.getElementById("chant").innerHTML = `
     <h3>${name}</h3>
     <div class="big">${naamData[name][state.language].replace(/\n/g,"<br>")}</div>
+
     <div class="click-zone" onclick="chant('${name}')">Tap to Chant</div>
-    <p>Count: ${state.counts[name]}</p>
+
+    <p>Today: ${c.daily[tday] || 0}</p>
+    <p>Lifetime: ${c.lifetime}</p>
 
     <label>Target</label>
-    <input type="number" value="${t.count||""}" id="tcount"><br>
-    <label>Date</label>
-    <input type="date" value="${t.date||""}" id="tdate"><br>
+    <input type="number" id="tcount" value="${target.count || ''}">
+
+    <label>Target Date</label>
+    <input type="date" id="tdate" value="${target.date || ''}">
+
     <button onclick="saveTarget('${name}')">Save Target</button>
 
-    ${t.count ? `<progress value="${state.counts[name]}" max="${t.count}"></progress>` : ""}
+    ${target.count ? `<progress value="${c.lifetime}" max="${target.count}"></progress>` : ""}
   `;
 }
 
 function chant(name) {
-  state.counts[name]++;
-  state.analytics.push({
-    date: new Date().toLocaleDateString(),
-    name, count: 1
-  });
+  const t = today();
+  const c = state.counts[name];
+  c.lifetime++;
+  c.daily[t] = (c.daily[t] || 0) + 1;
+
+  state.analytics.push({ date: t, name, count: 1 });
   save();
   openChant(name);
 }
@@ -314,10 +264,10 @@ function saveTarget(name) {
 }
 
 function renderAnalytics() {
-  const t = document.getElementById("analyticsTable");
-  t.innerHTML = "";
+  const table = document.getElementById("analyticsTable");
+  table.innerHTML = "";
   state.analytics.forEach(a => {
-    t.innerHTML += `<tr><td>${a.date}</td><td>${a.name}</td><td>${a.count}</td></tr>`;
+    table.innerHTML += `<tr><td>${a.date}</td><td>${a.name}</td><td>${a.count}</td></tr>`;
   });
 }
 
