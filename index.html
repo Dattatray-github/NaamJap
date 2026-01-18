@@ -105,7 +105,6 @@ header {
   font-weight: bold;
 }
 
-/* Table */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -116,7 +115,6 @@ th, td {
   padding: 8px;
   border-bottom: 1px solid #ddd;
   font-size: 14px;
-  text-align: left;
 }
 
 select {
@@ -131,22 +129,17 @@ select {
 
 <header id="title"></header>
 
-<!-- HOME -->
 <div id="home" class="page active"></div>
 
-<!-- CHANT -->
 <div id="chant" class="page">
   <div class="mantra" id="mantraText"></div>
   <div class="tap-area" onclick="increment()">Tap here 🙏</div>
   <div class="footer">
-    <span id="todayLabel"></span>:
-    <b id="todayCount">0</b> |
-    <span id="lifeLabel"></span>:
-    <b id="lifeCount">0</b>
+    <span id="todayLabel"></span>: <b id="todayCount">0</b> |
+    <span id="lifeLabel"></span>: <b id="lifeCount">0</b>
   </div>
 </div>
 
-<!-- ANALYTICS -->
 <div id="analytics" class="page">
   <table>
     <thead>
@@ -160,7 +153,6 @@ select {
   </table>
 </div>
 
-<!-- SETTINGS -->
 <div id="settings" class="page">
   <label id="langLabel"></label>
   <select onchange="changeLang(this.value)">
@@ -170,50 +162,25 @@ select {
   </select>
 </div>
 
-<!-- NAV -->
 <div class="nav">
-  <button onclick="showPage('home')" class="active">Home</button>
-  <button onclick="showPage('analytics')">Analytics</button>
-  <button onclick="showPage('settings')">Settings</button>
+  <button id="btnHome" class="active" onclick="showPage('home', this)">Home</button>
+  <button onclick="showPage('analytics', this)">Analytics</button>
+  <button onclick="showPage('settings', this)">Settings</button>
 </div>
 
 <script>
 const TEXT = {
-  en: {
-    title: "NaamJap Counter",
-    today: "Today",
-    life: "Lifetime",
-    date: "Date",
-    naam: "Naam",
-    count: "Count",
-    lang: "Language"
-  },
-  mr: {
-    title: "नामजप काउंटर",
-    today: "आज",
-    life: "एकूण",
-    date: "दिनांक",
-    naam: "नाम",
-    count: "मोजणी",
-    lang: "भाषा"
-  },
-  or: {
-    title: "ନାମଜପ କାଉଣ୍ଟର",
-    today: "ଆଜି",
-    life: "ମୋଟ",
-    date: "ତାରିଖ",
-    naam: "ନାମ",
-    count: "ଗଣନା",
-    lang: "ଭାଷା"
-  }
+  en: { title:"NaamJap Counter", today:"Today", life:"Lifetime", date:"Date", naam:"Naam", count:"Count", lang:"Language" },
+  mr: { title:"नामजप काउंटर", today:"आज", life:"एकूण", date:"दिनांक", naam:"नाम", count:"मोजणी", lang:"भाषा" },
+  or: { title:"ନାମଜପ କାଉଣ୍ଟର", today:"ଆଜି", life:"ମୋଟ", date:"ତାରିଖ", naam:"ନାମ", count:"ଗଣନା", lang:"ଭାଷା" }
 };
 
 const NAAMS = [
-  { name: "Radha Naam", mantra: "Radha Radha Radha" },
-  { name: "Krishna Naam", mantra: "Krishna Krishna Krishna" },
-  { name: "Ram Naam", mantra: "Ram Ram Ram" },
-  { name: "Hare Krishna Mahamantra",
-    mantra: `Hare Krishna Hare Krishna
+  { name:"Radha Naam", mantra:"Radha Radha Radha" },
+  { name:"Krishna Naam", mantra:"Krishna Krishna Krishna" },
+  { name:"Ram Naam", mantra:"Ram Ram Ram" },
+  { name:"Hare Krishna Mahamantra",
+    mantra:`Hare Krishna Hare Krishna
 Krishna Krishna Hare Hare
 Hare Ram Hare Ram
 Ram Ram Hare Hare`
@@ -221,6 +188,8 @@ Ram Ram Hare Hare`
 ];
 
 let currentNaam = null;
+
+const $ = id => document.getElementById(id);
 
 function todayKey() {
   return new Date().toISOString().slice(0,10);
@@ -240,22 +209,22 @@ function saveData(d) {
 
 function applyLang() {
   const t = TEXT[getLang()];
-  document.getElementById("title").innerText = t.title;
-  todayLabel.innerText = t.today;
-  lifeLabel.innerText = t.life;
-  dateLabel.innerText = t.date;
-  naamLabel.innerText = t.naam;
-  countLabel.innerText = t.count;
-  langLabel.innerText = t.lang;
+  $("title").innerText = t.title;
+  $("todayLabel").innerText = t.today;
+  $("lifeLabel").innerText = t.life;
+  $("dateLabel").innerText = t.date;
+  $("naamLabel").innerText = t.naam;
+  $("countLabel").innerText = t.count;
+  $("langLabel").innerText = t.lang;
 }
 
 function loadHome() {
-  const home = document.getElementById("home");
+  const home = $("home");
   home.innerHTML = "";
   const d = getData();
 
   NAAMS.forEach(n => {
-    if (!d[n.name]) d[n.name] = { life: 0, daily: {} };
+    if (!d[n.name]) d[n.name] = { life:0, daily:{} };
     const today = d[n.name].daily[todayKey()] || 0;
 
     const c = document.createElement("div");
@@ -276,7 +245,7 @@ function loadHome() {
 function openChant(n) {
   currentNaam = n;
   showPage("chant");
-  mantraText.innerText = n.mantra;
+  $("mantraText").innerText = n.mantra;
   updateCounts();
 }
 
@@ -291,36 +260,36 @@ function increment() {
 
 function updateCounts() {
   const d = getData();
-  todayCount.innerText = d[currentNaam.name].daily[todayKey()] || 0;
-  lifeCount.innerText = d[currentNaam.name].life;
+  $("todayCount").innerText = d[currentNaam.name].daily[todayKey()] || 0;
+  $("lifeCount").innerText = d[currentNaam.name].life;
 }
 
 function loadAnalytics() {
-  const body = document.getElementById("analyticsBody");
+  const body = $("analyticsBody");
   body.innerHTML = "";
   const d = getData();
 
-  Object.keys(d).forEach(n => {
+  Object.keys(d).forEach(n =>
     Object.keys(d[n].daily).forEach(date => {
       const tr = document.createElement("tr");
       tr.innerHTML = `<td>${date}</td><td>${n}</td><td>${d[n].daily[date]}</td>`;
       body.appendChild(tr);
-    });
-  });
+    })
+  );
 }
 
-function showPage(p) {
+function showPage(p, btn) {
   document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
-  document.getElementById(p).classList.add("active");
+  $(p).classList.add("active");
 
   document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-  event.target?.classList.add("active");
+  if (btn) btn.classList.add("active");
 
   if (p === "analytics") loadAnalytics();
   if (p === "home") loadHome();
 }
 
-function changeLang(l) 
+function changeLang(l) {
   localStorage.setItem("lang", l);
   applyLang();
   loadHome();
