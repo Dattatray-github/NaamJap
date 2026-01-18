@@ -200,7 +200,7 @@ function openChant(name) {
   document.getElementById("chant").innerHTML = `
     <h3>${name}</h3>
     <div class="big">${naamData[name][state.language].replace(/\n/g,"<br>")}</div>
-    <div class="click-zone" onclick="chant('${name}')">Tap to Chant</div>
+    <div class="click-zone" onclick="chant('${name}')">Tap to Chant📿</div>
     <p>Today: ${state.counts[name].today}</p>
     <p>Total: ${state.counts[name].total}</p>
   `;
