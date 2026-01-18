@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NaamJap Counter</title>
+
+<style>
+:root {
+  --bg: #fff3e0;
+  --card: #ffffff;
+  --accent: #ff9800;
+  --text: #4e342e;
+}
+
+body {
+  margin: 0;
+  font-family: "Georgia", serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  text-align: center;
+  padding: 16px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.container {
+  padding: 10px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.card-count {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text);
+}
+
+#chantScreen {
+  display: none;
+  height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.mantra {
+  text-align: center;
+  font-size: 22px;
+  line-height: 1.6;
+  margin-top: 30px;
+}
+
+.tap-area {
+  margin: 40px 0;
+  height: 40vh;
+  background: #ffe0b2;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  user-select: none;
+}
+
+.footer {
+  text-align: center;
+  font-size: 16px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+
+<header>NaamJap Counter</header>
+
+<div id="home" class="container"></div>
+
+<div id="chantScreen">
+  <button class="secondary" onclick="goHome()">⬅ Back</button>
+
+  <div class="mantra" id="mantraText"></div>
+
+  <div class="tap-area" onclick="increment()">
+    Tap here 🙏
+  </div>
+
+  <div class="footer">
+    Today: <b id="todayCount">0</b> |
+    Lifetime: <b id="lifeCount">0</b>
+  </div>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+
+const defaultNaams = [
+  {
+    name: "Radha Naam",
+    mantra: "Radha Radha Radha"
+  },
+  {
+    name: "Krishna Naam",
+    mantra: "Krishna Krishna Krishna"
+  },
+  {
+    name: "Ram Naam",
+    mantra: "Ram Ram Ram"
+  },
+  {
+    name: "Hare Krishna Mahamantra",
+    mantra:
+`Hare Krishna Hare Krishna
+Krishna Krishna Hare Hare
+Hare Ram Hare Ram
+Ram Ram Hare Hare`
+  }
+];
+
+let currentNaam = null;
+
+/* ---------- UTIL ---------- */
+
+function todayKey() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function getData() {
+  return JSON.parse(localStorage.getItem("naamjap_data") || "{}");
+}
+
+function saveData(data) {
+  localStorage.setItem("naamjap_data", JSON.stringify(data));
+}
+
+/* ---------- HOME ---------- */
+
+function loadHome() {
+  const home = document.getElementById("home");
+  home.innerHTML = "";
+
+  const data = getData();
+
+  defaultNaams.forEach(n => {
+    if (!data[n.name]) {
+      data[n.name] = { lifetime: 0, daily: {} };
+    }
+
+    const today = data[n.name].daily[todayKey()] || 0;
+    const life = data[n.name].lifetime;
+
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <div class="card-title">${n.name}</div>
+      <div class="card-count">
+        Today: ${today} | Lifetime: ${life}
+      </div>
+    `;
+    div.onclick = () => openChant(n);
+    home.appendChild(div);
+  });
+
+  saveData(data);
+}
+
+/* ---------- CHANT ---------- */
+
+function openChant(n) {
+  currentNaam = n;
+  document.getElementById("home").style.display = "none";
+  document.getElementById("chantScreen").style.display = "block";
+  document.getElementById("mantraText").innerText = n.mantra;
+  updateCounts();
+}
+
+function increment() {
+  const data = getData();
+  const name = currentNaam.name;
+
+  data[name].lifetime++;
+  data[name].daily[todayKey()] =
+    (data[name].daily[todayKey()] || 0) + 1;
+
+  saveData(data);
+  updateCounts();
+}
+
+function updateCounts() {
+  const data = getData();
+  const name = currentNaam.name;
+
+  document.getElementById("todayCount").innerText =
+    data[name].daily[todayKey()] || 0;
+
+  document.getElementById("lifeCount").innerText =
+    data[name].lifetime;
+}
+
+function goHome() {
+  document.getElementById("chantScreen").style.display = "none";
+  document.getElementById("home").style.display = "block";
+  loadHome();
+}
+
+/* ---------- INIT ---------- */
+loadHome();
+</script>
+
+</body>
+  </html>
