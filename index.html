@@ -120,9 +120,9 @@ th, td {
 <div id="chant" class="page"></div>
 
 <div class="bottom-nav">
-<button onclick="openPage('home')">🏠Home</button>
-<button onclick="openPage('analytics')">📊 Analytics</button>
-<button onclick="openPage('settings')">⚙Settings</button>
+<button onclick="openPage('home')">🏠</button>
+<button onclick="openPage('analytics')">📊</button>
+<button onclick="openPage('settings')">⚙</button>
 </div>
 
 <script>
@@ -147,6 +147,16 @@ let state = JSON.parse(localStorage.getItem("naamjap")) || {
   dark: false
 };
 
+/* 🔒 NORMALIZE OLD DATA (KEY FIX) */
+Object.keys(naamData).forEach(n => {
+  if (typeof state.counts[n] === "number") {
+    state.counts[n] = { today: 0, total: state.counts[n] };
+  }
+  if (!state.counts[n]) {
+    state.counts[n] = { today: 0, total: 0 };
+  }
+});
+
 function save() {
   localStorage.setItem("naamjap", JSON.stringify(state));
 }
@@ -162,7 +172,6 @@ function renderHome() {
   const home = document.getElementById("home");
   home.innerHTML = "<h3>NaamJap</h3>";
   Object.keys(naamData).forEach(n => {
-    state.counts[n] ??= { today:0, total:0 };
     home.innerHTML += `
       <div class="card" onclick="openChant('${n}')">
         <b>${naamData[n][state.language]}</b><br>
@@ -192,7 +201,7 @@ function chant(name) {
   openChant(name);
 }
 
-/* 🔧 FIXED ANALYTICS (ONLY CHANGE) */
+/* Analytics – already fixed */
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
   table.innerHTML = "";
