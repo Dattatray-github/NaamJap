@@ -64,6 +64,10 @@ button {
   border: none;
   font-weight: 600;
 }
+.reset-btn {
+  background: #e53935;
+  color: #fff;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -107,14 +111,24 @@ th, td {
 
 <div id="settings" class="page">
 <h3>Settings</h3>
+
+<label>Language</label>
 <select id="languageSelect">
 <option value="en">English</option>
 <option value="mr">Marathi</option>
 <option value="or">Odia</option>
 </select>
-<label>
-<input type="checkbox" id="darkToggle"> Dark Mode
-</label>
+
+<label>Theme</label>
+<select id="themeSelect">
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+</select>
+
+<hr>
+
+<button class="reset-btn" onclick="resetToday()">Reset Today’s Count</button>
+<button class="reset-btn" onclick="resetTotal()">Reset Total Count</button>
 </div>
 
 <div id="chant" class="page"></div>
@@ -147,7 +161,7 @@ let state = JSON.parse(localStorage.getItem("naamjap")) || {
   dark: false
 };
 
-/* 🔒 NORMALIZE OLD DATA (KEY FIX) */
+/* normalize old data */
 Object.keys(naamData).forEach(n => {
   if (typeof state.counts[n] === "number") {
     state.counts[n] = { today: 0, total: state.counts[n] };
@@ -201,7 +215,6 @@ function chant(name) {
   openChant(name);
 }
 
-/* Analytics – already fixed */
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
   table.innerHTML = "";
@@ -216,18 +229,36 @@ function renderAnalytics() {
   });
 }
 
+/* Settings */
 document.getElementById("languageSelect").value = state.language;
 document.getElementById("languageSelect").onchange = e => {
   state.language = e.target.value;
   save(); renderHome();
 };
 
-document.getElementById("darkToggle").checked = state.dark;
-document.getElementById("darkToggle").onchange = e => {
-  state.dark = e.target.checked;
+document.getElementById("themeSelect").value = state.dark ? "dark" : "light";
+document.getElementById("themeSelect").onchange = e => {
+  state.dark = e.target.value === "dark";
   document.body.classList.toggle("dark", state.dark);
   save();
 };
+
+function resetToday() {
+  if (!confirm("Reset today’s count for all Naam?")) return;
+  Object.values(state.counts).forEach(c => c.today = 0);
+  save();
+  renderHome();
+}
+
+function resetTotal() {
+  if (!confirm("Reset total count for all Naam? This cannot be undone.")) return;
+  Object.values(state.counts).forEach(c => {
+    c.today = 0;
+    c.total = 0;
+  });
+  save();
+  renderHome();
+}
 
 document.body.classList.toggle("dark", state.dark);
 renderHome();
