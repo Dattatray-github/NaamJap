@@ -13,7 +13,6 @@
   --nav: #ffffff;
   --border: #ddd;
 }
-
 .dark {
   --bg: #121212;
   --text: #ffffff;
@@ -21,24 +20,19 @@
   --nav: #1e1e1e;
   --border: #333;
 }
-
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
   background: var(--bg);
   color: var(--text);
 }
-
 .page {
   display: none;
   padding: 16px;
   padding-bottom: 90px;
 }
-
 .page.active { display: block; }
-
 .card {
   background: var(--card);
   padding: 14px;
@@ -47,14 +41,12 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.08);
   cursor: pointer;
 }
-
 .big {
   text-align: center;
   font-size: 18px;
   line-height: 1.6;
   margin: 16px 0;
 }
-
 .click-zone {
   height: 180px;
   background: rgba(0,0,0,0.06);
@@ -66,7 +58,6 @@ body {
   margin: 16px 0;
   user-select: none;
 }
-
 input, select, button {
   width: 100%;
   padding: 10px;
@@ -74,33 +65,25 @@ input, select, button {
   margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  font-size: 15px;
 }
-
 button {
   background: #ff9800;
   border: none;
   font-weight: 600;
 }
-
 progress {
   width: 100%;
   height: 18px;
   margin-top: 10px;
 }
-
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
-
 th, td {
   border: 1px solid var(--border);
   padding: 8px;
-  font-size: 14px;
 }
-
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -111,7 +94,6 @@ th, td {
   background: var(--nav);
   border-top: 1px solid var(--border);
 }
-
 .bottom-nav button {
   flex: 1;
   background: none;
@@ -173,13 +155,16 @@ const naamData = {
   "RadhaKrishna": { en:"Radha Krishna", mr:"राधा कृष्ण", or:"ରାଧା କୃଷ୍ଣ" }
 };
 
-let state = JSON.parse(localStorage.getItem("naamjap")) || {
-  counts: {},
-  analytics: [],
-  language: "en",
-  dark: false,
-  targets: {}
-};
+let state = JSON.parse(localStorage.getItem("naamjap"));
+if (!state) {
+  state = {
+    counts: {},
+    analytics: [],
+    language: "en",
+    dark: false,
+    targets: {}
+  };
+}
 
 function save() {
   localStorage.setItem("naamjap", JSON.stringify(state));
@@ -190,66 +175,63 @@ function today() {
 }
 
 function openPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  var pages = document.querySelectorAll(".page");
+  for (var i=0; i<pages.length; i++) pages[i].classList.remove("active");
   document.getElementById(id).classList.add("active");
+
   if (id === "home") renderHome();
   if (id === "analytics") renderAnalytics();
 }
 
 function renderHome() {
-  const home = document.getElementById("home");
+  var home = document.getElementById("home");
   home.innerHTML = "<h3>NaamJap</h3>";
+  var t = today();
 
-  Object.keys(naamData).forEach(n => {
-    state.counts[n] ??= { lifetime: 0, daily: {} };
-    const t = today();
-    const todayCount = state.counts[n].daily[t] || 0;
-    const life = state.counts[n].lifetime;
+  for (var n in naamData) {
+    if (!state.counts[n]) {
+      state.counts[n] = { lifetime: 0, daily: {} };
+    }
 
-    home.innerHTML += `
-      <div class="card" onclick="openChant('${n}')">
-        <b>${naamData[n][state.language]}</b><br>
-        Today: ${todayCount}<br>
-        Lifetime: ${life}
-      </div>`;
-  });
+    var todayCount = state.counts[n].daily[t] || 0;
+    var life = state.counts[n].lifetime;
+
+    home.innerHTML +=
+      "<div class='card' onclick=\"openChant('" + n + "')\">" +
+      "<b>" + naamData[n][state.language] + "</b><br>" +
+      "Today: " + todayCount + "<br>" +
+      "Lifetime: " + life +
+      "</div>";
+  }
   save();
 }
 
 function openChant(name) {
   openPage("chant");
-  const tday = today();
-  const c = state.counts[name];
-  const target = state.targets[name] || {};
+  var t = today();
+  var c = state.counts[name];
+  var target = state.targets[name] || {};
 
-  document.getElementById("chant").innerHTML = `
-    <h3>${name}</h3>
-    <div class="big">${naamData[name][state.language].replace(/\n/g,"<br>")}</div>
-
-    <div class="click-zone" onclick="chant('${name}')">Tap to Chant</div>
-
-    <p>Today: ${c.daily[tday] || 0}</p>
-    <p>Lifetime: ${c.lifetime}</p>
-
-    <label>Target</label>
-    <input type="number" id="tcount" value="${target.count || ''}">
-
-    <label>Target Date</label>
-    <input type="date" id="tdate" value="${target.date || ''}">
-
-    <button onclick="saveTarget('${name}')">Save Target</button>
-
-    ${target.count ? `<progress value="${c.lifetime}" max="${target.count}"></progress>` : ""}
-  `;
+  document.getElementById("chant").innerHTML =
+    "<h3>" + name + "</h3>" +
+    "<div class='big'>" + naamData[name][state.language].replace(/\n/g,"<br>") + "</div>" +
+    "<div class='click-zone' onclick=\"chant('" + name + "')\">Tap to Chant</div>" +
+    "<p>Today: " + (c.daily[t] || 0) + "</p>" +
+    "<p>Lifetime: " + c.lifetime + "</p>" +
+    "<label>Target</label>" +
+    "<input type='number' id='tcount' value='" + (target.count || "") + "'>" +
+    "<label>Target Date</label>" +
+    "<input type='date' id='tdate' value='" + (target.date || "") + "'>" +
+    "<button onclick=\"saveTarget('" + name + "')\">Save Target</button>" +
+    (target.count ? "<progress value='" + c.lifetime + "' max='" + target.count + "'></progress>" : "");
 }
 
 function chant(name) {
-  const t = today();
-  const c = state.counts[name];
+  var t = today();
+  var c = state.counts[name];
   c.lifetime++;
   c.daily[t] = (c.daily[t] || 0) + 1;
-
-  state.analytics.push({ date: t, name, count: 1 });
+  state.analytics.push({ date: t, name: name, count: 1 });
   save();
   openChant(name);
 }
@@ -264,21 +246,23 @@ function saveTarget(name) {
 }
 
 function renderAnalytics() {
-  const table = document.getElementById("analyticsTable");
+  var table = document.getElementById("analyticsTable");
   table.innerHTML = "";
-  state.analytics.forEach(a => {
-    table.innerHTML += `<tr><td>${a.date}</td><td>${a.name}</td><td>${a.count}</td></tr>`;
-  });
+  for (var i=0; i<state.analytics.length; i++) {
+    var a = state.analytics[i];
+    table.innerHTML += "<tr><td>" + a.date + "</td><td>" + a.name + "</td><td>" + a.count + "</td></tr>";
+  }
 }
 
 document.getElementById("languageSelect").value = state.language;
-document.getElementById("languageSelect").onchange = e => {
+document.getElementById("languageSelect").onchange = function(e) {
   state.language = e.target.value;
-  save(); renderHome();
+  save();
+  renderHome();
 };
 
 document.getElementById("darkToggle").checked = state.dark;
-document.getElementById("darkToggle").onchange = e => {
+document.getElementById("darkToggle").onchange = function(e) {
   state.dark = e.target.checked;
   document.body.classList.toggle("dark", state.dark);
   save();
