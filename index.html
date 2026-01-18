@@ -1,220 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
 <title>NaamJap Counter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root {
-  --bg: #f5f5f5;
+  --bg: #fff3e0;
+  --text: #4e342e;
   --card: #ffffff;
-  --text: #000000;
-  --primary: #ff9800;
+  --nav: #ffffff;
+  --border: #ddd;
 }
-
 .dark {
   --bg: #121212;
-  --card: #1e1e1e;
   --text: #ffffff;
+  --card: #1e1e1e;
+  --nav: #1e1e1e;
+  --border: #333;
 }
-
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui;
   background: var(--bg);
   color: var(--text);
 }
-
-header {
-  padding: 16px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  background: var(--primary);
-  color: white;
-}
-
-.page {
-  display: none;
-  padding: 16px;
-}
-
-.page.active {
-  display: block;
-}
-
+.page { display: none; padding: 16px; padding-bottom: 90px; }
+.page.active { display: block; }
 .card {
   background: var(--card);
-  padding: 16px;
+  padding: 14px;
   margin-bottom: 12px;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
   cursor: pointer;
 }
-
-.counts {
-  font-size: 14px;
-  opacity: 0.7;
+.big {
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
 }
-
-.tap-area {
-  height: 300px;
-  background: var(--card);
-  border-radius: 16px;
+.click-zone {
+  height: 180px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  margin-top: 20px;
+  font-size: 18px;
+  margin: 16px 0;
 }
-
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+button {
+  background: #ff9800;
+  border: none;
+  font-weight: 600;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 8px;
+}
 .bottom-nav {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
+  height: 64px;
   display: flex;
-  background: var(--card);
-  border-top: 1px solid #ccc;
+  background: var(--nav);
+  border-top: 1px solid var(--border);
 }
-
 .bottom-nav button {
   flex: 1;
-  padding: 12px;
   border: none;
   background: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-select, input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
+  font-size: 22px;
 }
 </style>
 </head>
 
 <body>
 
-<header>NaamJap Counter</header>
-
-<!-- HOME -->
 <div id="home" class="page active"></div>
 
-<!-- ANALYTICS -->
 <div id="analytics" class="page">
-  <h3>Analytics</h3>
-  <table border="1" width="100%">
-    <tr><th>Date</th><th>Naam</th><th>Count</th></tr>
-    <tbody id="analyticsTable"></tbody>
-  </table>
+<h3>Analytics</h3>
+<table>
+<thead>
+<tr><th>Date</th><th>Naam</th><th>Count</th></tr>
+</thead>
+<tbody id="analyticsTable"></tbody>
+</table>
 </div>
 
-<!-- SETTINGS -->
 <div id="settings" class="page">
-  <h3>Settings</h3>
-
-  <label>Language</label>
-  <select id="languageSelect">
-    <option value="en">English</option>
-    <option value="mr">Marathi</option>
-    <option value="or">Odia</option>
-  </select>
-
-  <label style="margin-top:15px;">Theme</label>
-  <select id="themeSelect">
-    <option value="light">Light</option>
-    <option value="dark">Dark</option>
-  </select>
+<h3>Settings</h3>
+<select id="languageSelect">
+<option value="en">English</option>
+<option value="mr">Marathi</option>
+<option value="or">Odia</option>
+</select>
+<label>
+<input type="checkbox" id="darkToggle"> Dark Mode
+</label>
 </div>
 
-<!-- CHANT PAGE -->
 <div id="chant" class="page"></div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('analytics')">Analytics</button>
-  <button onclick="showPage('settings')">Settings</button>
+<button onclick="openPage('home')">🏠</button>
+<button onclick="openPage('analytics')">📊</button>
+<button onclick="openPage('settings')">⚙</button>
 </div>
 
 <script>
 const naamData = {
-  "Radha Naam": { en:"Radha Radha", mr:"राधा राधा", or:"ରାଧା ରାଧା" },
-  "Krishna Naam": { en:"Krishna Krishna", mr:"कृष्ण कृष्ण", or:"କୃଷ୍ଣ କୃଷ୍ଣ" },
-  "Raam Naam": { en:"Ram Ram", mr:"राम राम", or:"ରାମ ରାମ" },
+  "Radha Naam": {en:"Radha",mr:"राधा",or:"ରାଧା"},
+  "Krishna Naam": {en:"Krishna",mr:"कृष्ण",or:"କୃଷ୍ଣ"},
+  "Ram Naam": {en:"Ram",mr:"राम",or:"ରାମ"},
   "Hare Krishna MahaMantra": {
     en:"Hare Krishna Hare Krishna Krishna Krishna Hare Hare\nHare Ram Hare Ram Ram Ram Hare Hare",
     mr:"हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे\nहरे राम हरे राम राम राम हरे हरे",
     or:"ହରେ କୃଷ୍ଣ ହରେ କୃଷ୍ଣ କୃଷ୍ଣ କୃଷ୍ଣ ହରେ ହରେ\nହରେ ରାମ ହରେ ରାମ ରାମ ରାମ ହରେ ହରେ"
   },
-  "Ram Krishna Hari": { en:"Ram Krishna Hari", mr:"राम कृष्ण हरी", or:"ରାମ କୃଷ୍ଣ ହରି" },
-  "SitaRam": { en:"Sita Ram", mr:"सीता राम", or:"ସୀତା ରାମ" },
-  "RadhaKrishna": { en:"Radha Krishna", mr:"राधा कृष्ण", or:"ରାଧା କୃଷ୍ଣ" }
+  "Ram Krishna Hari": {en:"Ram Krishna Hari",mr:"राम कृष्ण हरी",or:"ରାମ କୃଷ୍ଣ ହରି"},
+  "SitaRam": {en:"Sita Ram",mr:"सीता राम",or:"ସୀତା ରାମ"},
+  "RadhaKrishna": {en:"Radha Krishna",mr:"राधा कृष्ण",or:"ରାଧା କୃଷ୍ଣ"}
 };
 
-let state = JSON.parse(localStorage.getItem("naamState")) || {};
-let lang = localStorage.getItem("lang") || "en";
+let state = JSON.parse(localStorage.getItem("naamjap")) || {
+  counts: {},
+  analytics: [],
+  language: "en",
+  dark: false
+};
 
 function save() {
-  localStorage.setItem("naamState", JSON.stringify(state));
+  localStorage.setItem("naamjap", JSON.stringify(state));
 }
 
-function showPage(id) {
+function openPage(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+  if (id === "home") renderHome();
+  if (id === "analytics") renderAnalytics();
 }
 
 function renderHome() {
   const home = document.getElementById("home");
-  home.innerHTML = "";
-
-  Object.keys(naamData).forEach(name => {
-    if (!state[name]) state[name] = { daily:0, total:0 };
-
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <strong>${name}</strong>
-      <div class="counts">Today: ${state[name].daily} | Total: ${state[name].total}</div>
-    `;
-    card.onclick = () => openChant(name);
-    home.appendChild(card);
+  home.innerHTML = "<h3>NaamJap</h3>";
+  Object.keys(naamData).forEach(n => {
+    state.counts[n] ??= { today:0, total:0 };
+    home.innerHTML += `
+      <div class="card" onclick="openChant('${n}')">
+        <b>${naamData[n][state.language]}</b><br>
+        Today: ${state.counts[n].today} | Total: ${state.counts[n].total}
+      </div>`;
   });
-
   save();
 }
 
 function openChant(name) {
-  const chant = document.getElementById("chant");
-  chant.innerHTML = `
-    <h2>${naamData[name][lang].replace(/\n/g,"<br>")}</h2>
-    <div class="tap-area" onclick="increment('${name}')">Tap to Chant</div>
-    <p>Today: ${state[name].daily}</p>
-    <p>Total: ${state[name].total}</p>
+  openPage("chant");
+  document.getElementById("chant").innerHTML = `
+    <h3>${name}</h3>
+    <div class="big">${naamData[name][state.language].replace(/\n/g,"<br>")}</div>
+    <div class="click-zone" onclick="chant('${name}')">Tap to Chant</div>
+    <p>Today: ${state.counts[name].today}</p>
+    <p>Total: ${state.counts[name].total}</p>
   `;
-  showPage("chant");
 }
 
-function increment(name) {
-  state[name].daily++;
-  state[name].total++;
+function chant(name) {
+  const date = new Date().toLocaleDateString();
+  state.counts[name].today++;
+  state.counts[name].total++;
+  state.analytics.push({ date, name });
   save();
   openChant(name);
 }
 
-document.getElementById("languageSelect").value = lang;
+/* 🔧 FIXED ANALYTICS (ONLY CHANGE) */
+function renderAnalytics() {
+  const table = document.getElementById("analyticsTable");
+  table.innerHTML = "";
+  const grouped = {};
+  state.analytics.forEach(a => {
+    const key = a.date + "|" + a.name;
+    grouped[key] = (grouped[key] || 0) + 1;
+  });
+  Object.entries(grouped).forEach(([k,v]) => {
+    const [date,name] = k.split("|");
+    table.innerHTML += `<tr><td>${date}</td><td>${name}</td><td>${v}</td></tr>`;
+  });
+}
+
+document.getElementById("languageSelect").value = state.language;
 document.getElementById("languageSelect").onchange = e => {
-  lang = e.target.value;
-  localStorage.setItem("lang", lang);
-  renderHome();
+  state.language = e.target.value;
+  save(); renderHome();
 };
 
-document.getElementById("themeSelect").onchange = e => {
-  document.body.classList.toggle("dark", e.target.value === "dark");
+document.getElementById("darkToggle").checked = state.dark;
+document.getElementById("darkToggle").onchange = e => {
+  state.dark = e.target.checked;
+  document.body.classList.toggle("dark", state.dark);
+  save();
 };
 
+document.body.classList.toggle("dark", state.dark);
 renderHome();
 </script>
 
