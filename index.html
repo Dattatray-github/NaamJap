@@ -2,301 +2,250 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NaamJap Counter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root {
   --bg: #fff3e0;
-  --card: #ffffff;
-  --accent: #ff9800;
   --text: #4e342e;
+  --card: #ffffff;
 }
-
+.dark {
+  --bg: #121212;
+  --text: #ffffff;
+  --card: #1e1e1e;
+}
 body {
   margin: 0;
-  font-family: Georgia, serif;
+  font-family: system-ui;
   background: var(--bg);
   color: var(--text);
 }
-
-header {
-  text-align: center;
-  padding: 14px;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.page {
-  display: none;
-  padding: 12px;
-  padding-bottom: 70px;
-}
-
-.page.active {
-  display: block;
-}
+.page { display: none; padding: 15px; }
+.page.active { display: block; }
 
 .card {
   background: var(--card);
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
   cursor: pointer;
 }
 
-.card-title {
-  font-size: 18px;
-  font-weight: bold;
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background: var(--card);
+  border-top: 1px solid #ccc;
+}
+.bottom-nav button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: none;
+  font-size: 16px;
 }
 
-.card-count {
-  font-size: 14px;
-  margin-top: 6px;
-}
-
-.mantra {
+.big {
   text-align: center;
-  font-size: 22px;
-  line-height: 1.6;
-  margin-top: 20px;
+  font-size: 20px;
+  margin: 15px 0;
 }
 
-.tap-area {
-  margin: 30px 0;
-  height: 40vh;
-  background: #ffe0b2;
-  border-radius: 20px;
+.click-zone {
+  height: 200px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  user-select: none;
+  font-size: 18px;
 }
 
-.footer {
-  text-align: center;
-  font-size: 16px;
-}
-
-/* Bottom Nav */
-.nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  background: white;
-  display: flex;
-  border-top: 1px solid #ccc;
-}
-
-.nav button {
-  flex: 1;
-  border: none;
-  background: none;
-  font-size: 14px;
-  color: var(--text);
-}
-
-.nav button.active {
-  color: var(--accent);
-  font-weight: bold;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-}
-
-th, td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
-}
-
-select {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-}
+progress { width: 100%; height: 20px; }
+table { width: 100%; border-collapse: collapse; }
+td, th { border: 1px solid #aaa; padding: 6px; }
 </style>
 </head>
 
 <body>
 
-<header id="title"></header>
-
+<!-- HOME -->
 <div id="home" class="page active"></div>
 
-<div id="chant" class="page">
-  <div class="mantra" id="mantraText"></div>
-  <div class="tap-area" onclick="increment()">Tap here 🙏</div>
-  <div class="footer">
-    <span id="todayLabel"></span>: <b id="todayCount">0</b> |
-    <span id="lifeLabel"></span>: <b id="lifeCount">0</b>
-  </div>
-</div>
-
+<!-- ANALYTICS -->
 <div id="analytics" class="page">
-  <table>
-    <thead>
-      <tr>
-        <th id="dateLabel"></th>
-        <th id="naamLabel"></th>
-        <th id="countLabel"></th>
-      </tr>
-    </thead>
-    <tbody id="analyticsBody"></tbody>
-  </table>
+<h3>Analytics</h3>
+<table>
+<thead><tr><th>Date</th><th>Naam</th><th>Count</th></tr></thead>
+<tbody id="analyticsTable"></tbody>
+</table>
 </div>
 
+<!-- SETTINGS -->
 <div id="settings" class="page">
-  <label id="langLabel"></label>
-  <select onchange="changeLang(this.value)">
-    <option value="en">English</option>
-    <option value="mr">मराठी</option>
-    <option value="or">ଓଡ଼ିଆ</option>
-  </select>
+<h3>Settings</h3>
+
+<label>Language</label>
+<select id="languageSelect">
+<option value="en">English</option>
+<option value="mr">Marathi</option>
+<option value="or">Odia</option>
+</select>
+
+<br><br>
+<label>
+<input type="checkbox" id="darkToggle"> Dark Mode
+</label>
 </div>
 
-<div class="nav">
-  <button id="btnHome" class="active" onclick="showPage('home', this)">Home</button>
-  <button onclick="showPage('analytics', this)">Analytics</button>
-  <button onclick="showPage('settings', this)">Settings</button>
+<!-- CHANT PAGE -->
+<div id="chant" class="page"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+<button onclick="openPage('home')">🏠</button>
+<button onclick="openPage('analytics')">📊</button>
+<button onclick="openPage('settings')">⚙</button>
 </div>
 
 <script>
-const TEXT = {
-  en: { title:"NaamJap Counter", today:"Today", life:"Lifetime", date:"Date", naam:"Naam", count:"Count", lang:"Language" },
-  mr: { title:"नामजप काउंटर", today:"आज", life:"एकूण", date:"दिनांक", naam:"नाम", count:"मोजणी", lang:"भाषा" },
-  or: { title:"ନାମଜପ କାଉଣ୍ଟର", today:"ଆଜି", life:"ମୋଟ", date:"ତାରିଖ", naam:"ନାମ", count:"ଗଣନା", lang:"ଭାଷା" }
+const naamData = {
+  "Radha Naam": {
+    en: "Radha",
+    mr: "राधा",
+    or: "ରାଧା"
+  },
+  "Krishna Naam": {
+    en: "Krishna",
+    mr: "कृष्ण",
+    or: "କୃଷ୍ଣ"
+  },
+  "Ram Naam": {
+    en: "Ram",
+    mr: "राम",
+    or: "ରାମ"
+  },
+  "Hare Krishna MahaMantra": {
+    en: "Hare Krishna Hare Krishna Krishna Krishna Hare Hare\nHare Ram Hare Ram Ram Ram Hare Hare",
+    mr: "हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे\nहरे राम हरे राम राम राम हरे हरे",
+    or: "ହରେ କୃଷ୍ଣ ହରେ କୃଷ୍ଣ କୃଷ୍ଣ କୃଷ୍ଣ ହରେ ହରେ\nହରେ ରାମ ହରେ ରାମ ରାମ ରାମ ହରେ ହରେ"
+  },
+  "Ram Krishna Hari": {
+    en: "Ram Krishna Hari",
+    mr: "राम कृष्ण हरी",
+    or: "ରାମ କୃଷ୍ଣ ହରି"
+  },
+  "SitaRam": {
+    en: "Sita Ram",
+    mr: "सीता राम",
+    or: "ସୀତା ରାମ"
+  },
+  "RadhaKrishna": {
+    en: "Radha Krishna",
+    mr: "राधा कृष्ण",
+    or: "ରାଧା କୃଷ୍ଣ"
+  }
+  
 };
 
-const NAAMS = [
-  { name:"Radha Naam", mantra:"Radha Radha Radha" },
-  { name:"Krishna Naam", mantra:"Krishna Krishna Krishna" },
-  { name:"Ram Naam", mantra:"Ram Ram Ram" },
-  { name:"Hare Krishna Mahamantra",
-    mantra:`Hare Krishna Hare Krishna
-Krishna Krishna Hare Hare
-Hare Ram Hare Ram
-Ram Ram Hare Hare`
-  }
-];
+let state = JSON.parse(localStorage.getItem("naamjap")) || {
+  counts: {},
+  analytics: [],
+  language: "en",
+  dark: false,
+  targets: {}
+};
 
-let currentNaam = null;
-
-const $ = id => document.getElementById(id);
-
-function todayKey() {
-  return new Date().toISOString().slice(0,10);
+function save() {
+  localStorage.setItem("naamjap", JSON.stringify(state));
 }
 
-function getLang() {
-  return localStorage.getItem("lang") || "en";
+function openPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  if (id === "home") renderHome();
+  if (id === "analytics") renderAnalytics();
 }
 
-function getData() {
-  return JSON.parse(localStorage.getItem("data") || "{}");
-}
-
-function saveData(d) {
-  localStorage.setItem("data", JSON.stringify(d));
-}
-
-function applyLang() {
-  const t = TEXT[getLang()];
-  $("title").innerText = t.title;
-  $("todayLabel").innerText = t.today;
-  $("lifeLabel").innerText = t.life;
-  $("dateLabel").innerText = t.date;
-  $("naamLabel").innerText = t.naam;
-  $("countLabel").innerText = t.count;
-  $("langLabel").innerText = t.lang;
-}
-
-function loadHome() {
-  const home = $("home");
-  home.innerHTML = "";
-  const d = getData();
-
-  NAAMS.forEach(n => {
-    if (!d[n.name]) d[n.name] = { life:0, daily:{} };
-    const today = d[n.name].daily[todayKey()] || 0;
-
-    const c = document.createElement("div");
-    c.className = "card";
-    c.innerHTML = `
-      <div class="card-title">${n.name}</div>
-      <div class="card-count">
-        ${TEXT[getLang()].today}: ${today} |
-        ${TEXT[getLang()].life}: ${d[n.name].life}
+function renderHome() {
+  const home = document.getElementById("home");
+  home.innerHTML = "<h3>NaamJap</h3>";
+  Object.keys(naamData).forEach(n => {
+    state.counts[n] ??= 0;
+    home.innerHTML += `
+      <div class="card" onclick="openChant('${n}')">
+        <b>${naamData[n][state.language]}</b><br>
+        Count: ${state.counts[n]}
       </div>`;
-    c.onclick = () => openChant(n);
-    home.appendChild(c);
   });
-
-  saveData(d);
+  save();
 }
 
-function openChant(n) {
-  currentNaam = n;
-  showPage("chant");
-  $("mantraText").innerText = n.mantra;
-  updateCounts();
+function openChant(name) {
+  openPage("chant");
+  const t = state.targets[name] || {};
+  document.getElementById("chant").innerHTML = `
+    <h3>${name}</h3>
+    <div class="big">${naamData[name][state.language].replace(/\n/g,"<br>")}</div>
+    <div class="click-zone" onclick="chant('${name}')">Tap to Chant</div>
+    <p>Count: ${state.counts[name]}</p>
+
+    <label>Target</label>
+    <input type="number" value="${t.count||""}" id="tcount"><br>
+    <label>Date</label>
+    <input type="date" value="${t.date||""}" id="tdate"><br>
+    <button onclick="saveTarget('${name}')">Save Target</button>
+
+    ${t.count ? `<progress value="${state.counts[name]}" max="${t.count}"></progress>` : ""}
+  `;
 }
 
-function increment() {
-  const d = getData();
-  const n = currentNaam.name;
-  d[n].life++;
-  d[n].daily[todayKey()] = (d[n].daily[todayKey()] || 0) + 1;
-  saveData(d);
-  updateCounts();
+function chant(name) {
+  state.counts[name]++;
+  state.analytics.push({
+    date: new Date().toLocaleDateString(),
+    name, count: 1
+  });
+  save();
+  openChant(name);
 }
 
-function updateCounts() {
-  const d = getData();
-  $("todayCount").innerText = d[currentNaam.name].daily[todayKey()] || 0;
-  $("lifeCount").innerText = d[currentNaam.name].life;
+function saveTarget(name) {
+  state.targets[name] = {
+    count: document.getElementById("tcount").value,
+    date: document.getElementById("tdate").value
+  };
+  save();
+  openChant(name);
 }
 
-function loadAnalytics() {
-  const body = $("analyticsBody");
-  body.innerHTML = "";
-  const d = getData();
-
-  Object.keys(d).forEach(n =>
-    Object.keys(d[n].daily).forEach(date => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${date}</td><td>${n}</td><td>${d[n].daily[date]}</td>`;
-      body.appendChild(tr);
-    })
-  );
+function renderAnalytics() {
+  const t = document.getElementById("analyticsTable");
+  t.innerHTML = "";
+  state.analytics.forEach(a => {
+    t.innerHTML += `<tr><td>${a.date}</td><td>${a.name}</td><td>${a.count}</td></tr>`;
+  });
 }
 
-function showPage(p, btn) {
-  document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
-  $(p).classList.add("active");
+document.getElementById("languageSelect").value = state.language;
+document.getElementById("languageSelect").onchange = e => {
+  state.language = e.target.value;
+  save(); renderHome();
+};
 
-  document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-  if (btn) btn.classList.add("active");
+document.getElementById("darkToggle").checked = state.dark;
+document.getElementById("darkToggle").onchange = e => {
+  state.dark = e.target.checked;
+  document.body.classList.toggle("dark", state.dark);
+  save();
+};
 
-  if (p === "analytics") loadAnalytics();
-  if (p === "home") loadHome();
-}
-
-function changeLang(l) {
-  localStorage.setItem("lang", l);
-  applyLang();
-  loadHome();
-}
-
-applyLang();
-loadHome();
+document.body.classList.toggle("dark", state.dark);
+renderHome();
 </script>
 
 </body>
