@@ -171,6 +171,14 @@ let state = JSON.parse(localStorage.getItem("naamjap")) || {
   dark: false
 };
 
+  const todayDate = new Date().toLocaleDateString();
+
+if (state.lastDate !== todayDate) {
+  Object.values(state.counts).forEach(c => c.today = 0);
+  state.lastDate = todayDate;
+  save();
+}
+  
 /* normalize old data */
 Object.keys(naamData).forEach(n => {
   if (typeof state.counts[n] === "number") {
@@ -224,20 +232,34 @@ function chant(name) {
   save();
   openChant(name);
 }
-
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
   table.innerHTML = "";
+
   const grouped = {};
+
   state.analytics.forEach(a => {
     const key = a.date + "|" + a.name;
     grouped[key] = (grouped[key] || 0) + 1;
   });
-  Object.entries(grouped).forEach(([k,v]) => {
-    const [date,name] = k.split("|");
-    table.innerHTML += `<tr><td>${date}</td><td>${name}</td><td>${v}</td></tr>`;
-  });
+
+  Object.entries(grouped)
+    .sort((a, b) => {
+      const d1 = new Date(b[0].split("|")[0]);
+      const d2 = new Date(a[0].split("|")[0]);
+      return d1 - d2; // DESC order
+    })
+    .forEach(([k, v]) => {
+      const [date, name] = k.split("|");
+      table.innerHTML += `
+        <tr>
+          <td>${date}</td>
+          <td>${name}</td>
+          <td>${v}</td>
+        </tr>`;
+    });
 }
+
 
 /* Settings */
 document.getElementById("languageSelect").value = state.language;
