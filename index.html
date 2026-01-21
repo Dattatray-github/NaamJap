@@ -160,6 +160,17 @@ th, td {
 .dark .naam-text {
   color: #F8BBD0;
 }
+
+.click-zone {
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.click-zone.glow {
+  box-shadow: 0 0 18px var(--accent),
+              0 0 32px rgba(233, 30, 99, 0.35);
+  transform: scale(0.98);
+}
+  
 </style>
 </head>
 
@@ -303,13 +314,20 @@ function openChant(name) {
 }
 
 function chant(name) {
+  const zone = document.querySelector(".click-zone");
+  zone.classList.add("glow");
+
+  setTimeout(() => zone.classList.remove("glow"), 250);
+
   const date = new Date().toLocaleDateString();
   state.counts[name].today++;
   state.counts[name].total++;
   state.analytics.push({ date, name });
+
   save();
   openChant(name);
 }
+  
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
   table.innerHTML = "";
