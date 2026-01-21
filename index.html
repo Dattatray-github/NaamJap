@@ -313,20 +313,24 @@ function openChant(name) {
   `;
 }
 
+
 function chant(name) {
   const zone = document.querySelector(".click-zone");
-  zone.classList.add("glow");
-
-  setTimeout(() => zone.classList.remove("glow"), 250);
+  if (zone) {
+    zone.classList.add("glow");
+  }
 
   const date = new Date().toLocaleDateString();
   state.counts[name].today++;
   state.counts[name].total++;
   state.analytics.push({ date, name });
-
   save();
-  openChant(name);
-}
+
+  // Allow glow to be visible before re-render
+  setTimeout(() => {
+    openChant(name);
+  }, 200);
+  }
   
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
