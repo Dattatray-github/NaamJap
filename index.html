@@ -7,19 +7,22 @@
 
 <style>
 :root {
-  --bg: #fff3e0;
-  --text: #4e342e;
-  --card: #ffffff;
-  --nav: #ffffff;
-  --border: #ddd;
-}
+  --bg: #FFF1F6;
+  --card: #FFFFFF;
+  --text: #5C2D3A;
+  --nav: #FFFFFF;
+  --border: #E6C1D0;
+  --accent: #E91E63;
+  }
 .dark {
-  --bg: #121212;
-  --text: #ffffff;
-  --card: #1e1e1e;
-  --nav: #1e1e1e;
-  --border: #333;
-}
+  --bg: #1E1418;
+  --card: #2A1E22;
+  --text: #F5E6EC;
+  --nav: #2A1E22;
+  --border: #4A2E3A;
+  --accent: #F48FB1;
+  }
+
 * { box-sizing: border-box; }
 body {
   margin: 0;
@@ -60,10 +63,12 @@ input, select, button {
   border: 1px solid var(--border);
 }
 button {
-  background: #ff9800;
+  background: var(--accent);
+  color: #fff;
   border: none;
   font-weight: 600;
 }
+  
 .reset-btn {
   background: #e53935;
   color: #fff;
