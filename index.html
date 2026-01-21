@@ -101,6 +101,38 @@ th, td {
   background: none;
   font-size: 22px;
 }
+
+  /* ===== NAAM UI ENHANCEMENTS ===== */
+
+.naam-card {
+  background: linear-gradient(135deg, #FFF7FB, #FCE4EC);
+  border-left: 5px solid var(--accent);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.naam-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: #AD1457;
+}
+
+.naam-count {
+  font-size: 0.95rem;
+  margin-top: 6px;
+  color: #7B4A58;
+}
+
+/* Dark mode support */
+.dark .naam-card {
+  background: linear-gradient(135deg, #2A1A20, #3A2029);
+}
+
+.dark .naam-title {
+  color: #F48FB1;
+}
+  
 </style>
 </head>
 
@@ -214,10 +246,15 @@ function renderHome() {
   home.innerHTML = "<h3>NaamJap</h3>";
   Object.keys(naamData).forEach(n => {
     home.innerHTML += `
-      <div class="card" onclick="openChant('${n}')">
-        <b>${naamData[n][state.language]}</b><br>
-        Today: ${state.counts[n].today} | Total: ${state.counts[n].total}
-      </div>`;
+  <div class="card naam-card" onclick="openChant('${n}')">
+    <div class="naam-title">
+      🕉️ ${naamData[n][state.language]}
+    </div>
+    <div class="naam-count">
+      Today: ${state.counts[n].today} | Total: ${state.counts[n].total}
+    </div>
+  </div>`;
+    
   });
   save();
 }
