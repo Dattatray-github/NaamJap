@@ -132,7 +132,34 @@ th, td {
 .dark .naam-title {
   color: #F48FB1;
 }
-  
+  /* ===== CHANT PAGE NAAM STYLING ===== */
+
+.naam-display {
+  background: linear-gradient(180deg, #FFF7FB, #FCE4EC);
+  border-radius: 16px;
+  padding: 24px 16px;
+  margin: 16px 0;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.naam-text {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.9;
+  letter-spacing: 0.8px;
+  color: #AD1457;
+  font-family: "Georgia", "Noto Serif", serif;
+}
+
+/* Dark mode support */
+.dark .naam-display {
+  background: linear-gradient(180deg, #2A1A20, #3A2029);
+}
+
+.dark .naam-text {
+  color: #F8BBD0;
+}
 </style>
 </head>
 
@@ -248,7 +275,7 @@ function renderHome() {
     home.innerHTML += `
   <div class="card naam-card" onclick="openChant('${n}')">
     <div class="naam-title">
-      🕉️ ${naamData[n][state.language]}
+       ${naamData[n][state.language]}
     </div>
     <div class="naam-count">
       Today: ${state.counts[n].today} | Total: ${state.counts[n].total}
@@ -263,7 +290,12 @@ function openChant(name) {
   openPage("chant");
   document.getElementById("chant").innerHTML = `
     <h3>${name}</h3>
-    <div class="big">${naamData[name][state.language].replace(/\n/g,"<br>")}</div>
+    <div class="naam-display">
+      <div class="naam-text">
+           ${naamData[name][state.language].replace(/\n/g,"<br>")}
+      </div>
+    </div>
+    
     <div class="click-zone" onclick="chant('${name}')">Tap to Chant📿</div>
     <p>Today: ${state.counts[name].today}</p>
     <p>Total: ${state.counts[name].total}</p>
