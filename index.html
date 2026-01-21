@@ -10,7 +10,7 @@
   --bg: #FFF1F6;
   --card: #FFFFFF;
   --text: #5C2D3A;
-  --nav: #FFFFFF;
+  --nav: #F3E1EA;
   --border: #E6C1D0;
   --accent: #E91E63;
   }
@@ -81,6 +81,9 @@ th, td {
   border: 1px solid var(--border);
   padding: 8px;
 }
+.bottom-nav button {
+  color: var(--text);
+}
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -90,6 +93,7 @@ th, td {
   display: flex;
   background: var(--nav);
   border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.08);
 }
 .bottom-nav button {
   flex: 1;
