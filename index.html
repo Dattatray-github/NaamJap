@@ -321,7 +321,8 @@ function chant(name) {
     zone.classList.add("glow");
   }
 
-  const date = new Date().toLocaleDateString();
+  //const date = new Date().toLocaleDateString();
+  const date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
   state.counts[name].today++;
   state.counts[name].total++;
   state.analytics.push({ date, name });
@@ -343,8 +344,19 @@ function renderAnalytics() {
     const key = a.date + "|" + a.name;
     grouped[key] = (grouped[key] || 0) + 1;
   });
-
-  Object.entries(grouped)
+  
+ Object.entries(grouped)
+  .sort((a, b) => b[0].localeCompare(a[0])) // DESC by date
+  .forEach(([k, v]) => {
+    const [date, name] = k.split("|");
+    table.innerHTML += `
+      <tr>
+        <td>${date}</td>
+        <td>${name}</td>
+        <td>${v}</td>
+      </tr>`;
+  });
+ /* Object.entries(grouped)
     .sort((a, b) => {
   const [d1] = b[0].split("|");
   const [d2] = a[0].split("|");
@@ -365,7 +377,7 @@ function renderAnalytics() {
           <td>${name}</td>
           <td>${v}</td>
         </tr>`;
-    });
+    });*/
 }
 
 
