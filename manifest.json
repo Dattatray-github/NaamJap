@@ -1,6 +1,6 @@
 {
   "name": "NaamJap Counter",
-  "short_name": "NaamJap",
+  "short_name": "नामजप",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#FFF1F6",
