@@ -407,6 +407,16 @@ function renderAnalytics() {
     }
 
     return parseDate(dateB) - parseDate(dateA); // DESCENDING
+    
+    .forEach(([k, v]) => {
+      const [date, name] = k.split("|");
+      table.innerHTML += `
+        <tr>
+          <td>${date}</td>
+          <td>${name}</td>
+          <td>${v}</td>
+        </tr>`;
+    });
   })
   
  /* Object.entries(grouped)
