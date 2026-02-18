@@ -49,7 +49,7 @@ body {
   font-size: 18px;
   line-height: 1.6;
 }
-.click-zone {
+/*.click-zone {
   height: 360px;
   background: rgba(0,0,0,0.06);
   border-radius: 14px;
@@ -58,6 +58,24 @@ body {
   justify-content: center;
   font-size: 18px;
   margin: 16px 0;
+}*/
+.click-zone {
+  height: 360px;
+  background: linear-gradient(135deg, #FF9800, #E91E63);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin: 20px 0;
+  box-shadow: 0 6px 20px rgba(233,30,99,0.25);
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.click-zone:active {
+  transform: scale(0.96);
 }
 input, select, button {
   width: 100%;
@@ -115,12 +133,12 @@ th, td {
   padding: 14px 16px;
 }
 
-.naam-title {
+/*.naam-title {
   font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: 0.6px;
   color: #AD1457;
-}
+}*/
 .naam-title {
   font-size: 28px;
   font-weight: 700;
