@@ -371,7 +371,7 @@ function chant(name) {
     openChant(name);
   }, 200);
   }
-  
+
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
   table.innerHTML = "";
@@ -384,28 +384,21 @@ function renderAnalytics() {
   });
 
   Object.entries(grouped)
-  .sort((a, b) => {
+    .sort((a, b) => {
+      const [dateA] = a[0].split("|");
+      const [dateB] = b[0].split("|");
 
-    const [dateA] = a[0].split("|");
-    const [dateB] = b[0].split("|");
-
-    function parseDate(d) {
-      // If already ISO (2026-01-18)
-      if (d.includes("-")) {
+      function parseDate(d) {
+        if (d.includes("-")) return new Date(d);
+        if (d.includes("/")) {
+          const [dd, mm, yyyy] = d.split("/");
+          return new Date(`${yyyy}-${mm}-${dd}`);
+        }
         return new Date(d);
       }
 
-      // If old format (18/01/2026)
-      if (d.includes("/")) {
-        const [dd, mm, yyyy] = d.split("/");
-        return new Date(`${yyyy}-${mm}-${dd}`);
-      }
-
-      return new Date(d);
-    }
-
-    return parseDate(dateB) - parseDate(dateA); // DESCENDING
-    
+      return parseDate(dateB) - parseDate(dateA); // DESCENDING
+    })
     .forEach(([k, v]) => {
       const [date, name] = k.split("|");
       table.innerHTML += `
@@ -415,8 +408,7 @@ function renderAnalytics() {
           <td>${v}</td>
         </tr>`;
     });
-  }
-  
+}
 
 
 
