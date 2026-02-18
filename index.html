@@ -328,18 +328,22 @@ function renderHome() {
 function openChant(name) {
   openPage("chant");
   document.getElementById("chant").innerHTML = `
-    <h3>${name}</h3>
+    <h3 class="naam-title">${name}</h3>
+
     <div class="naam-display">
       <div class="naam-text">
-           ${naamData[name][state.language].replace(/\n/g,"<br>")}
+        ${naamData[name][state.language].replace(/\n/g,"<br>")}
       </div>
     </div>
-    
-    <div class="click-zone" onclick="chant('${name}')">Tap to Chant📿</div>
 
-    <p>Today: ${state.counts[name].today}${getMala(state.counts[name].today)}</p>
-    <p>Total: ${state.counts[name].total}${getMala(state.counts[name].total)}</p>
+    <div class="click-zone" onclick="chant('${name}')">
+      Tap to Chant 📿
+    </div>
 
+    <div class="stats-box">
+      <p>Today: ${state.counts[name].today}${getMala(state.counts[name].today)}</p>
+      <p>Total: ${state.counts[name].total}${getMala(state.counts[name].total)}</p>
+    </div>
   `;
 }
 
