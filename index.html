@@ -415,46 +415,9 @@ function renderAnalytics() {
           <td>${v}</td>
         </tr>`;
     });
-  })
+  }
   
- /* Object.entries(grouped)
-  .sort((a, b) => {
-    const [dateA] = a[0].split("|");
-    const [dateB] = b[0].split("|");
-    return new Date(dateB) - new Date(dateA); // ✅ DESC by DATE ONLY
-  })
-  .forEach(([k, v]) => {
-    const [date, name] = k.split("|");
-    table.innerHTML += `
-      <tr>
-        <td>${date}</td>
-        <td>${name}</td>
-        <td>${v}</td>
-      </tr>`;
-  });*/
- /* Object.entries(grouped)
-    .sort((a, b) => {
-  const [d1] = b[0].split("|");
-  const [d2] = a[0].split("|");
 
-  const toDate = d => {
-    const [dd, mm, yyyy] = d.split("/");
-    return new Date(`${yyyy}-${mm}-${dd}`);
-  };
-
-  return toDate(d1) - toDate(d2); // DESC
-})
-    
-    .forEach(([k, v]) => {
-      const [date, name] = k.split("|");
-      table.innerHTML += `
-        <tr>
-          <td>${date}</td>
-          <td>${name}</td>
-          <td>${v}</td>
-        </tr>`;
-    });*/
-}
 
 
 /* Settings */
