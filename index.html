@@ -281,8 +281,9 @@ let state = JSON.parse(localStorage.getItem("naamjap")) || {
   dark: false
 };
 
-  const todayDate = new Date().toLocaleDateString();
-
+ // const todayDate = new Date().toLocaleDateString();
+let todayDate = new Date().toISOString().split("T")[0];
+  
 if (state.lastDate !== todayDate) {
   Object.values(state.counts).forEach(c => c.today = 0);
   state.lastDate = todayDate;
@@ -380,8 +381,32 @@ function renderAnalytics() {
     const key = a.date + "|" + a.name;
     grouped[key] = (grouped[key] || 0) + 1;
   });
-  
+
   Object.entries(grouped)
+  .sort((a, b) => {
+
+    const [dateA] = a[0].split("|");
+    const [dateB] = b[0].split("|");
+
+    function parseDate(d) {
+      // If already ISO (2026-01-18)
+      if (d.includes("-")) {
+        return new Date(d);
+      }
+
+      // If old format (18/01/2026)
+      if (d.includes("/")) {
+        const [dd, mm, yyyy] = d.split("/");
+        return new Date(`${yyyy}-${mm}-${dd}`);
+      }
+
+      return new Date(d);
+    }
+
+    return parseDate(dateB) - parseDate(dateA); // DESCENDING
+  })
+  
+ /* Object.entries(grouped)
   .sort((a, b) => {
     const [dateA] = a[0].split("|");
     const [dateB] = b[0].split("|");
@@ -395,7 +420,7 @@ function renderAnalytics() {
         <td>${name}</td>
         <td>${v}</td>
       </tr>`;
-  });
+  });*/
  /* Object.entries(grouped)
     .sort((a, b) => {
   const [d1] = b[0].split("|");
