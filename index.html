@@ -31,6 +31,9 @@ body {
   background: var(--bg);
   color: var(--text);
 }
+body {
+  background: linear-gradient(to bottom, #FFF1F6, #FFE4EC);
+}
 .page { display: none; padding: 16px; padding-bottom: 90px; }
 .page.active { display: block; }
 .card {
@@ -118,6 +121,16 @@ th, td {
   letter-spacing: 0.6px;
   color: #AD1457;
 }
+.naam-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 10px;
+  background: linear-gradient(45deg, #E91E63, #FF9800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .naam-count {
   font-size: 0.95rem;
@@ -170,6 +183,20 @@ th, td {
   box-shadow: 0 0 18px var(--accent),
               0 0 32px rgba(233, 30, 99, 0.35);
   transform: scale(0.98);
+}
+  .stats-box {
+  background: var(--card);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  margin: 12px 0;
+  text-align: center;
+}
+
+.stats-box p {
+  font-size: 16px;
+  margin: 6px 0;
+  font-weight: 500;
 }
   
 </style>
