@@ -345,12 +345,46 @@ function openChant(name) {
       Tap to Chant 📿
     </div>
 
+
+
+    <button onclick="addExternal('${name}')">
+        Add External Count
+    </button>
+
     <div class="stats-box">
       <p>Today: ${state.counts[name].today}${getMala(state.counts[name].today)}</p>
       <p>Total: ${state.counts[name].total}${getMala(state.counts[name].total)}</p>
     </div>
   `;
 }
+
+
+  function addExternal(name) {
+
+  const val = prompt("Enter external chant count:");
+
+  if (!val) return;
+
+  const num = parseInt(val);
+
+  if (isNaN(num) || num <= 0) {
+    alert("Please enter valid number");
+    return;
+  }
+
+  const date = new Date().toISOString().split("T")[0];
+
+  state.counts[name].today += num;
+  state.counts[name].total += num;
+
+  // store analytics
+  for (let i = 0; i < num; i++) {
+    state.analytics.push({ date, name });
+  }
+
+  save();
+  openChant(name);
+  }
 
 
 function chant(name) {
