@@ -644,43 +644,7 @@ function chant(name) {
   }, 200);
   }
 
-function renderAnalytics() {
-  const table = document.getElementById("analyticsTable");
-  table.innerHTML = "";
 
-  const grouped = {};
-
-  state.analytics.forEach(a => {
-    const key = a.date + "|" + a.name;
-    grouped[key] = (grouped[key] || 0) + 1;
-  });
-
-  Object.entries(grouped)
-    .sort((a, b) => {
-      const [dateA] = a[0].split("|");
-      const [dateB] = b[0].split("|");
-
-      function parseDate(d) {
-        if (d.includes("-")) return new Date(d);
-        if (d.includes("/")) {
-          const [dd, mm, yyyy] = d.split("/");
-          return new Date(`${yyyy}-${mm}-${dd}`);
-        }
-        return new Date(d);
-      }
-
-      return parseDate(dateB) - parseDate(dateA); // DESCENDING
-    })
-    .forEach(([k, v]) => {
-      const [date, name] = k.split("|");
-      table.innerHTML += `
-        <tr>
-          <td>${date}</td>
-          <td style="color:#ffab91; font-weight:600">${name}</td>
-          <td>${v}</td>
-        </tr>`;
-    });
-}
 
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
