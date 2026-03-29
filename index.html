@@ -48,19 +48,62 @@ body {
   font-size: 18px;
   line-height: 1.6;
 }
+
 .click-zone {
-  height: 360px;
-  background: rgba(0,0,0,0.06);
-  border-radius: 14px;
+  width: 260px;
+  height: 260px;
+  margin: 24px auto;
+  border-radius: 50%;
+  
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  margin: 16px 0;
-}
+  text-align: center;
 
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffe0d6;
+
+  background: radial-gradient(circle,
+    rgba(255,138,101,0.25),
+    rgba(255,138,101,0.05)
+  );
+
+  box-shadow:
+    0 0 20px rgba(255,138,101,0.5),
+    inset 0 0 15px rgba(255,140,100,0.3);
+
+  position: relative;
+}
+.click-zone::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+
+  background: repeating-conic-gradient(
+    #ffcc80 0deg 5deg,
+    transparent 5deg 10deg
+  );
+
+  mask: radial-gradient(circle, transparent 60%, black 61%);
+  -webkit-mask: radial-gradient(circle, transparent 60%, black 61%);
+}
 .click-zone:active {
-  transform: scale(0.96);
+  transform: scale(0.92);
+  box-shadow:
+    0 0 30px rgba(255,138,101,0.8),
+    inset 0 0 25px rgba(255,140,100,0.5);
+  }
+.chant-text {
+  font-size: 20px;
+  line-height: 1.4;
+
+  background: linear-gradient(45deg, #ffcc80, #ff8a65);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 0 10px rgba(255,140,100,0.6);
 }
 input, select, button {
   width: 100%;
@@ -468,10 +511,10 @@ function openChant(name) {
     </div>
 
     <div class="click-zone" onclick="chant('${name}')">
-      Tap to Chant 📿
+      <div class="chant-text">
+        Chant<br>📿
+      </div>
     </div>
-
-
 
     <button onclick="addExternal('${name}')">
         Add External Count
