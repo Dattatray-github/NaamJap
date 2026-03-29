@@ -75,11 +75,15 @@ button {
   border: none;
   font-weight: 600;
 }
-  
+
 .reset-btn {
-  background: #e53935;
-  color: #fff;
+  background: linear-gradient(45deg, #ff7043, #ff8a65);
+  border-radius: 12px;
+  font-weight: 600;
+
+  box-shadow: 0 4px 14px rgba(255,112,67,0.4);
 }
+  
 table {
   width: 100%;
   border-collapse: collapse;
@@ -102,41 +106,73 @@ th, td {
   border-top: 1px solid var(--border);
   box-shadow: 0 -2px 6px rgba(0,0,0,0.08);
 }
-.bottom-nav button {
-  flex: 1;
-  border: none;
-  background: none;
-  font-size: 22px;
-}
+
 .bottom-nav {
-  background: rgba(20,10,10,0.9);
-  border-top: 1px solid rgba(255,255,255,0.1);
+  background: rgba(20,10,10,0.95);
+  backdrop-filter: blur(12px);
+
+  border-top: 1px solid rgba(255,255,255,0.08);
 }
 
+.bottom-nav button {
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+.bottom-nav button:hover {
+  opacity: 1;
+}
+  
+h3 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 16px;
+
+  background: linear-gradient(45deg, #ffcc80, #ff8a65);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  letter-spacing: 1px;
+}
   /* ===== NAAM UI ENHANCEMENTS ===== */
 
 .naam-card {
-  background: linear-gradient(135deg, #FFF7FB, #FCE4EC);
-  border-left: 5px solid var(--accent);
-  border-radius: 14px;
-  padding: 14px 16px;
-}
+  background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
 
-/*.naam-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: 0.6px;
-  color: #AD1457;
-}*/
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,0.6),
+    inset 0 0 10px rgba(255,140,100,0.05);
+
+  backdrop-filter: blur(10px);
+}
+.naam-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(45deg, #ff8a65, transparent, #ffcc80);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+}
+  
 .naam-title {
   font-size: 20px;
   font-weight: 700;
-  letter-spacing: 1px;
   text-align: center;
-  margin-bottom: 10px;
-  background: linear-gradient(45deg, #E91E63, #FF9800);
+
+  background: linear-gradient(45deg, #ffcc80, #ff8a65);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 0 10px rgba(255,140,100,0.4);
 }
 
 .naam-count {
@@ -258,6 +294,25 @@ tr:nth-child(even) {
 
 tr:hover {
   background: rgba(255,138,101,0.1);
+}
+
+/* Settings Page */
+select, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+
+  border: 1px solid rgba(255,255,255,0.1);
+
+  backdrop-filter: blur(8px);
+}
+select:focus, input:focus {
+  outline: none;
+  border: 1px solid #ff8a65;
+  box-shadow: 0 0 10px rgba(255,138,101,0.4);
 }
   
 </style>
