@@ -178,9 +178,13 @@ h3 {
 .naam-count {
   font-size: 0.95rem;
   margin-top: 6px;
-  color: #7B4A58;
+  color: rgba(255, 230, 220, 0.85); /* brighter */
+  font-weight: 500;
 }
-
+.naam-count {
+  text-shadow: 0 0 6px rgba(255, 140, 100, 0.3);
+}
+  
 /* Dark mode support */
 .dark .naam-card {
   background: linear-gradient(135deg, #2A1A20, #3A2029);
@@ -297,13 +301,24 @@ tr:hover {
 }
 
 /* Settings Page */
+label {
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #ffccbc; /* brighter label */
+  font-weight: 600;
+}
+
 select, input {
   width: 100%;
   padding: 12px;
   border-radius: 12px;
 
   background: rgba(255,255,255,0.08);
-  color: var(--text);
+  
+  color: #ffe0d6; /* brighter text */
+  font-weight: 500;
 
   border: 1px solid rgba(255,255,255,0.1);
 
@@ -313,6 +328,9 @@ select:focus, input:focus {
   outline: none;
   border: 1px solid #ff8a65;
   box-shadow: 0 0 10px rgba(255,138,101,0.4);
+}
+select option {
+  color: #000; /* for dropdown list (important for mobile) */
 }
   
 </style>
