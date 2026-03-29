@@ -52,49 +52,65 @@ body {
 .click-zone {
   width: 260px;
   height: 260px;
-  margin: 24px auto;
+  margin: 28px auto;
+
   border-radius: 50%;
-  
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: #ffe0d6;
 
-  background: radial-gradient(circle,
-    rgba(255,138,101,0.25),
-    rgba(255,138,101,0.05)
+  background: radial-gradient(circle at 30% 30%,
+    #ffcc80,
+    #ff8a65 60%,
+    #bf360c 100%
   );
 
   box-shadow:
-    0 0 20px rgba(255,138,101,0.5),
-    inset 0 0 15px rgba(255,140,100,0.3);
+    0 10px 30px rgba(0,0,0,0.6),
+    inset 0 4px 15px rgba(255,255,255,0.2),
+    inset 0 -8px 20px rgba(0,0,0,0.4);
 
-  position: relative;
+  transition: all 0.15s ease;
 }
+
 .click-zone::before {
   content: "";
   position: absolute;
-  inset: -12px;
+  inset: -10px;
   border-radius: 50%;
 
-  background: repeating-conic-gradient(
-    #ffcc80 0deg 5deg,
-    transparent 5deg 10deg
-  );
+  border: 2px solid rgba(255, 204, 128, 0.4);
 
-  mask: radial-gradient(circle, transparent 60%, black 61%);
-  -webkit-mask: radial-gradient(circle, transparent 60%, black 61%);
+  box-shadow:
+    0 0 10px rgba(255, 138, 101, 0.5),
+    0 0 25px rgba(255, 138, 101, 0.3);
 }
+.click-zone::after {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+
+  background: radial-gradient(circle,
+    rgba(255,255,255,0.25),
+    transparent 70%
+  );
+}
+
 .click-zone:active {
   transform: scale(0.92);
+
   box-shadow:
-    0 0 30px rgba(255,138,101,0.8),
-    inset 0 0 25px rgba(255,140,100,0.5);
-  }
+    0 5px 15px rgba(0,0,0,0.6),
+    inset 0 6px 20px rgba(0,0,0,0.5);
+}
 .chant-text {
   font-size: 20px;
   line-height: 1.4;
