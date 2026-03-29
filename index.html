@@ -27,21 +27,21 @@
 body {
   margin: 0;
   font-family: system-ui;
-  background: var(--bg);
   color: var(--text);
-}
-body {
-  background: linear-gradient(to bottom, #FFF1F6, #FFE4EC);
+
+  background: radial-gradient(circle at center,
+    #3b1f1f 0%,
+    #1a0f0f 60%,
+    #000000 100%);
 }
 .page { display: none; padding: 16px; padding-bottom: 90px; }
 .page.active { display: block; }
 .card {
-  background: var(--card);
+  background: rgba(255,255,255,0.05);
   padding: 14px;
   margin-bottom: 12px;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  cursor: pointer;
+  backdrop-filter: blur(8px);
 }
 .big {
   text-align: center;
@@ -152,7 +152,9 @@ th, td {
   /* ===== CHANT PAGE NAAM STYLING ===== */
 
 .naam-display {
-  background: linear-gradient(180deg, #FFF7FB, #FCE4EC);
+  background: radial-gradient(circle,
+    rgba(255, 182, 193, 0.08),
+    transparent 70%);
   border-radius: 16px;
   padding: 24px 16px;
   margin: 16px 0;
@@ -161,12 +163,17 @@ th, td {
 }
 
 .naam-text {
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  line-height: 1.9;
-  letter-spacing: 0.8px;
-  color: #AD1457;
+  line-height: 2;
+  letter-spacing: 1px;
+  color: #ffccbc;
   font-family: "Georgia", "Noto Serif", serif;
+
+  text-shadow:
+    0 0 8px rgba(255, 140, 100, 0.8),
+    0 0 18px rgba(255, 100, 80, 0.6),
+    0 0 28px rgba(255, 80, 60, 0.4);
 }
 
 /* Dark mode support */
@@ -179,15 +186,25 @@ th, td {
 }
 
 .click-zone {
-  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  height: 300px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin: 16px 0;
+  backdrop-filter: blur(6px);
 }
 
 .click-zone.glow {
-  box-shadow: 0 0 18px var(--accent),
-              0 0 32px rgba(233, 30, 99, 0.35);
-  transform: scale(0.98);
+  box-shadow:
+    0 0 20px #ff8a65,
+    0 0 40px rgba(255, 138, 101, 0.5);
+  transform: scale(0.97);
 }
-  .stats-box {
+
+.stats-box {
   background: var(--card);
   padding: 15px;
   border-radius: 12px;
