@@ -222,6 +222,43 @@ th, td {
   margin: 6px 0;
   font-weight: 500;
 }
+/* ===== ANALYTICS DARK FIX ===== */
+
+#analytics h3 {
+  color: #ffccbc;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+table {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+
+th {
+  color: #ffab91;
+  font-weight: 600;
+  background: rgba(255,255,255,0.06);
+}
+
+td {
+  color: #ffe0d6;
+}
+
+th, td {
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 10px;
+  text-align: center;
+}
+tr:nth-child(even) {
+  background: rgba(255,255,255,0.03);
+}
+
+tr:hover {
+  background: rgba(255,138,101,0.1);
+}
   
 </style>
 </head>
@@ -459,7 +496,7 @@ function renderAnalytics() {
       table.innerHTML += `
         <tr>
           <td>${date}</td>
-          <td>${name}</td>
+          <td style="color:#ffab91; font-weight:600">${name}</td>
           <td>${v}</td>
         </tr>`;
     });
