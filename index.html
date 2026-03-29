@@ -373,6 +373,29 @@ select:focus, input:focus {
 select option {
   color: #000; /* for dropdown list (important for mobile) */
 }
+
+/* Action card (Add External) */
+.action-card {
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(255,138,101,0.4);
+}
+
+/* Stats card */
+.stats-card {
+  text-align: center;
+}
+
+.stats-card .naam-count {
+  font-size: 16px;
+  margin-top: 8px;
+}
+  
   
 </style>
 </head>
@@ -497,8 +520,11 @@ function renderHome() {
   save();
 }
 
+
+
 function openChant(name) {
   openPage("chant");
+
   document.getElementById("chant").innerHTML = `
     <h3 class="naam-title">${name}</h3>
 
@@ -510,17 +536,24 @@ function openChant(name) {
 
     <div class="click-zone" onclick="chant('${name}')">
       <div class="chant-text">
-        Chant<br>📿
+        Tap to Chant 📿
       </div>
     </div>
 
-    <button onclick="addExternal('${name}')">
-        Add External Count
-    </button>
+    <!-- ✅ Add External as CARD -->
+    <div class="card naam-card action-card" onclick="addExternal('${name}')">
+      <div class="naam-title">➕ Add External Count</div>
+    </div>
 
-    <div class="stats-box">
-      <p>Today: ${state.counts[name].today}${getMala(state.counts[name].today)}</p>
-      <p>Total: ${state.counts[name].total}${getMala(state.counts[name].total)}</p>
+    <!-- ✅ Stats as CARD -->
+    <div class="card naam-card stats-card">
+      <div class="naam-title">📊 Progress</div>
+      <div class="naam-count">
+        Today: ${state.counts[name].today} ${getMala(state.counts[name].today)}
+      </div>
+      <div class="naam-count">
+        Total: ${state.counts[name].total} ${getMala(state.counts[name].total)}
+      </div>
     </div>
   `;
 }
@@ -542,7 +575,7 @@ function openChant(name) {
   const date = new Date().toISOString().split("T")[0];
 
   state.counts[name].today += num;
-  state.counts[name].total += num;
+  state.count[name].total += num;
 
   // store analytics
   for (let i = 0; i < num; i++) {
