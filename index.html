@@ -611,7 +611,7 @@ function openChant(name) {
   const date = new Date().toISOString().split("T")[0];
 
   state.counts[name].today += num;
-  state.count[name].total += num;
+  state.counts[name].total += num;
 
   // store analytics
   for (let i = 0; i < num; i++) {
@@ -708,6 +708,10 @@ function renderAnalytics() {
 
   // 👉 Inject cards
   const analyticsPage = document.getElementById("analytics");
+
+// Remove old cards if exist
+const oldCards = analyticsPage.querySelector(".analytics-cards");
+if (oldCards) oldCards.remove();
   analyticsPage.insertAdjacentHTML("afterbegin", `
     <div class="analytics-cards">
       <div class="analytics-card">
