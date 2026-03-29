@@ -395,7 +395,38 @@ select option {
   font-size: 16px;
   margin-top: 8px;
 }
-  
+
+.analytics-cards {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.analytics-card {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.card-title {
+  font-size: 14px;
+  color: #ffab91;
+  margin-bottom: 6px;
+}
+
+.card-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffe0d6;
+
+  text-shadow: 0 0 10px rgba(255,140,100,0.6);
+}
   
 </style>
 </head>
@@ -649,7 +680,75 @@ function renderAnalytics() {
     });
 }
 
+function renderAnalytics() {
+  const table = document.getElementById("analyticsTable");
+  table.innerHTML = "";
 
+  const grouped = {};
+
+  state.analytics.forEach(a => {
+    const key = a.date + "|" + a.name;
+    grouped[key] = (grouped[key] || 0) + 1;
+  });
+
+  // 👉 NEW: calculate stats
+  let highest = 0;
+  let total = 0;
+  let uniqueDays = new Set();
+
+  Object.entries(grouped).forEach(([k, v]) => {
+    const [date] = k.split("|");
+
+    highest = Math.max(highest, v);
+    total += v;
+    uniqueDays.add(date);
+  });
+
+  const avg = uniqueDays.size ? Math.round(total / uniqueDays.size) : 0;
+
+  // 👉 Inject cards
+  const analyticsPage = document.getElementById("analytics");
+  analyticsPage.insertAdjacentHTML("afterbegin", `
+    <div class="analytics-cards">
+      <div class="analytics-card">
+        <div class="card-title">🏆 Highest Jaap</div>
+        <div class="card-value">${highest}</div>
+      </div>
+
+      <div class="analytics-card">
+        <div class="card-title">📈 Daily Average</div>
+        <div class="card-value">${avg}</div>
+      </div>
+    </div>
+  `);
+  
+Object.entries(grouped)
+    .sort((a, b) => {
+      const [dateA] = a[0].split("|");
+      const [dateB] = b[0].split("|");
+
+      function parseDate(d) {
+        if (d.includes("-")) return new Date(d);
+        if (d.includes("/")) {
+          const [dd, mm, yyyy] = d.split("/");
+          return new Date(`${yyyy}-${mm}-${dd}`);
+        }
+        return new Date(d);
+      }
+
+      return parseDate(dateB) - parseDate(dateA); // DESCENDING
+    })
+    .forEach(([k, v]) => {
+      const [date, name] = k.split("|");
+      table.innerHTML += `
+        <tr>
+          <td>${date}</td>
+          <td style="color:#ffab91; font-weight:600">${name}</td>
+          <td>${v}</td>
+        </tr>`;
+    });
+  
+}
 
 /* Settings */
 document.getElementById("languageSelect").value = state.language;
