@@ -5,6 +5,7 @@
 <title>NaamJap Counter</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E91E63">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root {
   --bg: #FFF1F6;
@@ -437,6 +438,30 @@ select option {
 
 <div id="analytics" class="page">
 <h3>Analytics</h3>
+  <div class="naam-card">
+
+  <label>Select Year</label>
+  <select id="yearSelect"></select>
+
+  <label>Select Month</label>
+  <select id="monthSelect">
+    <option value="0">Jan</option>
+    <option value="1">Feb</option>
+    <option value="2">Mar</option>
+    <option value="3">Apr</option>
+    <option value="4">May</option>
+    <option value="5">Jun</option>
+    <option value="6">Jul</option>
+    <option value="7">Aug</option>
+    <option value="8">Sep</option>
+    <option value="9">Oct</option>
+    <option value="10">Nov</option>
+    <option value="11">Dec</option>
+  </select>
+
+  <canvas id="monthlyChart" height="120"></canvas>
+
+  </div>
 <table>
 <thead>
 <tr><th>Date</th><th>Naam</th><th>Count</th></tr>
@@ -691,6 +716,16 @@ if (oldCards) oldCards.remove();
       </div>
     </div>
   `);
+
+  const table = document.getElementById("analyticsTable");
+  table.innerHTML = "";
+
+  populateYearMonth();
+  renderChart();
+
+  document.getElementById("yearSelect").onchange = renderChart;
+  document.getElementById("monthSelect").onchange = renderChart;
+
   
 Object.entries(grouped)
     .sort((a, b) => {
@@ -749,10 +784,74 @@ function resetTotal() {
 document.body.classList.toggle("dark", state.dark);
 renderHome();
 
-  function getMala(count) {
+function getMala(count) {
   const mala = Math.floor(count / 108);
   return mala > 0 ? ` (${mala} Mala)` : "";
+}
+
+/* Chart Functions */
+
+function populateYearMonth() {
+  const yearSelect = document.getElementById("yearSelect");
+  yearSelect.innerHTML = "";
+
+  const currentYear = new Date().getFullYear();
+
+  for (let y = currentYear; y >= currentYear - 5; y--) {
+    yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
   }
+
+  yearSelect.value = currentYear;
+  document.getElementById("monthSelect").value = new Date().getMonth();
+}
+function getMonthlyData(year, month) {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const data = new Array(daysInMonth).fill(0);
+
+  state.analytics.forEach(a => {
+    const d = new Date(a.date);
+
+    if (d.getFullYear() == year && d.getMonth() == month) {
+      const day = d.getDate() - 1;
+      data[day]++;
+    }
+  });
+
+  return data;
+}
+let chart;
+
+function renderChart() {
+  const year = parseInt(document.getElementById("yearSelect").value);
+  const month = parseInt(document.getElementById("monthSelect").value);
+
+  const data = getMonthlyData(year, month);
+
+  const labels = data.map((_, i) => i + 1);
+
+  const ctx = document.getElementById("monthlyChart");
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Daily Jaap",
+        data: data,
+        borderWidth: 2,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
   
 </script>
   
