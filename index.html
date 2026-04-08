@@ -668,9 +668,9 @@ function chant(name) {
   save();
 
   // Allow glow to be visible before re-render
-  setTimeout(() => {
+  //setTimeout(() => {
     openChant(name);
-  }, 200);
+  //}, 200);
   }
 
 
@@ -815,7 +815,8 @@ function getMonthlyData(year, month) {
 
     if (d.getFullYear() == year && d.getMonth() == month) {
       const day = d.getDate() - 1;
-      data[day]++;
+      //data[day]++;
+      data[day] += (a.count || 1);
     }
   });
 
