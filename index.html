@@ -573,16 +573,17 @@ Object.keys(naamData).forEach(n => {
     state.counts[n] = { today: 0, total: 0 };
   }
 });
-  save();
+  //save();
 
 if (!state.lastDate) {
   state.lastDate = todayDate;
-  save();
+  //save();
 } else if (state.lastDate !== todayDate) {
   Object.values(state.counts).forEach(c => c.today = 0);
   state.lastDate = todayDate;
-  save();
+  //save();
 }
+  save();
 
 //function save() {
   //localStorage.setItem("naamjap", JSON.stringify(state));
