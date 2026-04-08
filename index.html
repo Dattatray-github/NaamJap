@@ -668,25 +668,11 @@ function chant(name) {
   save();
 
   // Allow glow to be visible before re-render
-  //setTimeout(() => {
-    //openChant(name);
-    updateChantUI(name)
-  //}, 200);
+  setTimeout(() => {
+    openChant(name);
+  }, 100);
   }
   
-function updateChantUI(name) {
-  const stats = document.querySelectorAll(".stats-card .naam-count");
-
-  if (stats.length >= 2) {
-    stats[0].innerHTML =
-      `Today: ${state.counts[name].today} ${getMala(state.counts[name].today)}`;
-
-    stats[1].innerHTML =
-      `Total: ${state.counts[name].total} ${getMala(state.counts[name].total)}`;
-  }
-  }
-
-
 
 function renderAnalytics() {
   const table = document.getElementById("analyticsTable");
