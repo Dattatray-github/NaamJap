@@ -528,18 +528,18 @@ const naamData = {
 }
 };
 
-//let state = JSON.parse(localStorage.getItem("naamjap")) || {
-  //counts: {},
-  //analytics: [],
-  //language: "mr",
- // dark: false
-  //};
-let state;
-try {
-  state = JSON.parse(localStorage.getItem("naamjap")) || {};
-} catch (e) {
-  state = {};
-}
+let state = JSON.parse(localStorage.getItem("naamjap")) || {
+  counts: {},
+  analytics: [],
+  language: "mr",
+  dark: false
+  };
+//let state;
+//try {
+  //state = JSON.parse(localStorage.getItem("naamjap")) || {};
+//} catch (e) {
+  //state = {};
+//}
 
 state.counts = state.counts || {};
 state.analytics = state.analytics || [];
