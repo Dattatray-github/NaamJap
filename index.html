@@ -528,12 +528,23 @@ const naamData = {
 }
 };
 
-let state = JSON.parse(localStorage.getItem("naamjap")) || {
-  counts: {},
-  analytics: [],
-  language: "mr",
-  dark: false
-};
+//let state = JSON.parse(localStorage.getItem("naamjap")) || {
+  //counts: {},
+  //analytics: [],
+  //language: "mr",
+ // dark: false
+  //};
+let state;
+try {
+  state = JSON.parse(localStorage.getItem("naamjap")) || {};
+} catch (e) {
+  state = {};
+}
+
+state.counts = state.counts || {};
+state.analytics = state.analytics || [];
+state.language = state.language || "mr";
+state.dark = state.dark || false;
 
  // const todayDate = new Date().toLocaleDateString();
 //let todayDate = new Date().toISOString().split("T")[0];
@@ -562,6 +573,7 @@ Object.keys(naamData).forEach(n => {
     state.counts[n] = { today: 0, total: 0 };
   }
 });
+  save();
 
 if (!state.lastDate) {
   state.lastDate = todayDate;
@@ -572,8 +584,12 @@ if (!state.lastDate) {
   save();
 }
 
+//function save() {
+  //localStorage.setItem("naamjap", JSON.stringify(state));
+//}
 function save() {
   localStorage.setItem("naamjap", JSON.stringify(state));
+  console.log("SAVED STATE:", JSON.parse(localStorage.getItem("naamjap")));
 }
 
 function openPage(id) {
