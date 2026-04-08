@@ -551,14 +551,7 @@ let todayDate = getLocalDate();
   //state.lastDate = todayDate;
   //save();
 //}
-if (!state.lastDate) {
-  state.lastDate = todayDate;
-  save();
-} else if (state.lastDate !== todayDate) {
-  Object.values(state.counts).forEach(c => c.today = 0);
-  state.lastDate = todayDate;
-  save();
-}
+
   
 /* normalize old data */
 Object.keys(naamData).forEach(n => {
@@ -569,6 +562,15 @@ Object.keys(naamData).forEach(n => {
     state.counts[n] = { today: 0, total: 0 };
   }
 });
+
+if (!state.lastDate) {
+  state.lastDate = todayDate;
+  save();
+} else if (state.lastDate !== todayDate) {
+  Object.values(state.counts).forEach(c => c.today = 0);
+  state.lastDate = todayDate;
+  save();
+}
 
 function save() {
   localStorage.setItem("naamjap", JSON.stringify(state));
@@ -596,7 +598,7 @@ function renderHome() {
   </div>`;
     
   });
-  save();
+  //save();
 }
 
 
@@ -661,6 +663,7 @@ function openChant(name) {
   state.analytics.push({ date, name, count: num });
     
   save();
+  console.log("AFTER SAVE:", JSON.parse(localStorage.getItem("naamjap")));
   //renderHome();
   //renderAnalytics();
   //openChant(name);
