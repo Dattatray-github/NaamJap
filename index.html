@@ -536,40 +536,19 @@ let state = JSON.parse(localStorage.getItem("naamjap")) || {
   language: "mr",
   dark: false
   };
-//let state;
-//try {
-  //state = JSON.parse(localStorage.getItem("naamjap")) || {};
-//} catch (e) {
-  //state = {};
-//}
 
 state.counts = state.counts || {};
 state.analytics = state.analytics || [];
 state.language = state.language || "mr";
 state.dark = state.dark || false;
 
- // const todayDate = new Date().toLocaleDateString();
-//let todayDate = new Date().toISOString().split("T")[0];
-
-//function getLocalDate() {
-  //const d = new Date();
-  //return d.getFullYear() + "-" +
-         //String(d.getMonth()+1).padStart(2,'0') + "-" +
-         //String(d.getDate()).padStart(2,'0');
-//}
 function getLocalDate() {
   return new Date().toLocaleDateString("en-CA"); 
 }
 
 let todayDate = getLocalDate();
   
-//if (state.lastDate !== todayDate) {
-  //Object.values(state.counts).forEach(c => c.today = 0);
-  //state.lastDate = todayDate;
-  //save();
-//}
 
-  
 /* normalize old data */
 Object.keys(naamData).forEach(n => {
   if (typeof state.counts[n] === "number") {
@@ -579,7 +558,7 @@ Object.keys(naamData).forEach(n => {
     state.counts[n] = { today: 0, total: 0 };
   }
 });
-  //save();
+  
 
 if (!state.lastDate) {
   state.lastDate = todayDate;
@@ -592,9 +571,6 @@ if (state.lastDate !== todayDate) {
 }
   save();
 
-//function save() {
-  //localStorage.setItem("naamjap", JSON.stringify(state));
-//}
 function save() {
   localStorage.setItem("naamjap", JSON.stringify(state));
   console.log("SAVED STATE:", JSON.parse(localStorage.getItem("naamjap")));
@@ -622,7 +598,6 @@ function renderHome() {
   </div>`;
     
   });
-  //save();
 }
 
 
@@ -681,18 +656,11 @@ function openChant(name) {
   state.counts[name].today += num;
   state.counts[name].total += num;
 
-  // store analytics
- // for (let i = 0; i < num; i++) {
-   // state.analytics.push({ date, name });
- // }
   state.analytics.push({ date, name, count: num });
     
   save();
   console.log("AFTER SAVE:", JSON.parse(localStorage.getItem("naamjap")));
-  //renderHome();
-  //renderAnalytics();
-  //openChant(name);
-   //updateStatsUI(name);
+
     openChant(name);
 
     if (document.getElementById("analytics").classList.contains("active")) {
@@ -726,21 +694,15 @@ function chant(name) {
     }, 100); // adjust timing if needed
   }
 
-  //const date = new Date().toLocaleDateString();
-  //const date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  
   const date = getLocalDate();
   
   state.counts[name].today++;
   state.counts[name].total++;
-//  state.analytics.push({ date, name });
+
   state.analytics.push({ date, name, count: 1 });
   save();
 
-  // Allow glow to be visible before re-render
-  //setTimeout(() => {
-    //openChant(name);
-  //}, 100);
-  //updateStatsUI(name);
   openChant(name);
 
     if (document.getElementById("analytics").classList.contains("active")) {
