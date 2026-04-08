@@ -598,7 +598,7 @@ function renderHome() {
   </div>`;
     
   });
-  //save();
+  save();
 }
 
 
@@ -651,7 +651,8 @@ function openChant(name) {
     return;
   }
 
-  const date = new Date().toISOString().split("T")[0];
+  //const date = new Date().toISOString().split("T")[0];
+    const date = getLocalDate();
 
   state.counts[name].today += num;
   state.counts[name].total += num;
@@ -701,7 +702,9 @@ function chant(name) {
   }
 
   //const date = new Date().toLocaleDateString();
-  const date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  //const date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  const date = getLocalDate();
+  
   state.counts[name].today++;
   state.counts[name].total++;
 //  state.analytics.push({ date, name });
