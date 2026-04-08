@@ -536,9 +536,25 @@ let state = JSON.parse(localStorage.getItem("naamjap")) || {
 };
 
  // const todayDate = new Date().toLocaleDateString();
-let todayDate = new Date().toISOString().split("T")[0];
+//let todayDate = new Date().toISOString().split("T")[0];
+function getLocalDate() {
+  const d = new Date();
+  return d.getFullYear() + "-" +
+         String(d.getMonth()+1).padStart(2,'0') + "-" +
+         String(d.getDate()).padStart(2,'0');
+}
+
+let todayDate = getLocalDate();
   
-if (state.lastDate !== todayDate) {
+//if (state.lastDate !== todayDate) {
+  //Object.values(state.counts).forEach(c => c.today = 0);
+  //state.lastDate = todayDate;
+  //save();
+//}
+if (!state.lastDate) {
+  state.lastDate = todayDate;
+  save();
+} else if (state.lastDate !== todayDate) {
   Object.values(state.counts).forEach(c => c.today = 0);
   state.lastDate = todayDate;
   save();
@@ -623,11 +639,9 @@ function openChant(name) {
 
 
   function addExternal(name) {
-
+  state = JSON.parse(localStorage.getItem("naamjap")) || state;
   const val = prompt("Enter external chant count:");
-
   if (!val) return;
-
   const num = parseInt(val);
 
   if (isNaN(num) || num <= 0) {
@@ -652,9 +666,9 @@ function openChant(name) {
   //openChant(name);
     updateStatsUI(name);
 
-if (document.getElementById("analytics").classList.contains("active")) {
-  renderAnalytics();
-}
+    if (document.getElementById("analytics").classList.contains("active")) {
+      renderAnalytics();
+    }
   }
   
 function updateStatsUI(name) {
@@ -674,6 +688,7 @@ function updateStatsUI(name) {
 
 
 function chant(name) {
+  state = JSON.parse(localStorage.getItem("naamjap")) || state;
   const zone = document.querySelector(".click-zone");
   if (zone) {
     zone.classList.add("glow");
