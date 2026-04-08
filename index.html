@@ -548,11 +548,15 @@ state.dark = state.dark || false;
 
  // const todayDate = new Date().toLocaleDateString();
 //let todayDate = new Date().toISOString().split("T")[0];
+
+//function getLocalDate() {
+  //const d = new Date();
+  //return d.getFullYear() + "-" +
+         //String(d.getMonth()+1).padStart(2,'0') + "-" +
+         //String(d.getDate()).padStart(2,'0');
+//}
 function getLocalDate() {
-  const d = new Date();
-  return d.getFullYear() + "-" +
-         String(d.getMonth()+1).padStart(2,'0') + "-" +
-         String(d.getDate()).padStart(2,'0');
+  return new Date().toLocaleDateString("en-CA"); 
 }
 
 let todayDate = getLocalDate();
@@ -577,11 +581,12 @@ Object.keys(naamData).forEach(n => {
 
 if (!state.lastDate) {
   state.lastDate = todayDate;
-  //save();
-} else if (state.lastDate !== todayDate) {
+  save();
+} 
+if (state.lastDate !== todayDate) {
   Object.values(state.counts).forEach(c => c.today = 0);
   state.lastDate = todayDate;
-  //save();
+  save();
 }
   save();
 
