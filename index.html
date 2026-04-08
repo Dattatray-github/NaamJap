@@ -651,6 +651,10 @@ function openChant(name) {
   //renderAnalytics();
   //openChant(name);
     updateStatsUI(name);
+
+if (document.getElementById("analytics").classList.contains("active")) {
+  renderAnalytics();
+}
   }
   
 function updateStatsUI(name) {
@@ -691,6 +695,10 @@ function chant(name) {
     //openChant(name);
   //}, 100);
   updateStatsUI(name);
+
+    if (document.getElementById("analytics").classList.contains("active")) {
+      renderAnalytics();
+    }
   }
   
 
