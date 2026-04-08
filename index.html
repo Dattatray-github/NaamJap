@@ -641,7 +641,7 @@ function openChant(name) {
 
 
   function addExternal(name) {
-  state = JSON.parse(localStorage.getItem("naamjap")) || state;
+  
   const val = prompt("Enter external chant count:");
   if (!val) return;
   const num = parseInt(val);
@@ -692,7 +692,7 @@ function updateStatsUI(name) {
 
 
 function chant(name) {
-  state = JSON.parse(localStorage.getItem("naamjap")) || state;
+  
   const zone = document.querySelector(".click-zone");
   if (zone) {
     zone.classList.add("glow");
