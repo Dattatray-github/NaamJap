@@ -641,10 +641,11 @@ function openChant(name) {
   state.counts[name].total += num;
 
   // store analytics
-  for (let i = 0; i < num; i++) {
-    state.analytics.push({ date, name });
-  }
-
+ // for (let i = 0; i < num; i++) {
+   // state.analytics.push({ date, name });
+ // }
+  state.analytics.push({ date, name, count: num });
+    
   save();
   renderHome();
   renderAnalytics();
@@ -662,7 +663,8 @@ function chant(name) {
   const date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
   state.counts[name].today++;
   state.counts[name].total++;
-  state.analytics.push({ date, name });
+//  state.analytics.push({ date, name });
+  state.analytics.push({ date, name, count: 1 });
   save();
 
   // Allow glow to be visible before re-render
@@ -681,7 +683,8 @@ function renderAnalytics() {
 
   state.analytics.forEach(a => {
     const key = a.date + "|" + a.name;
-    grouped[key] = (grouped[key] || 0) + 1;
+  //  grouped[key] = (grouped[key] || 0) + 1;
+    grouped[key] = (grouped[key] || 0) + (a.count || 1);
   });
 
   // 👉 NEW: calculate stats
