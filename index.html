@@ -657,6 +657,9 @@ function chant(name) {
   const zone = document.querySelector(".click-zone");
   if (zone) {
     zone.classList.add("glow");
+    setTimeout(() => {
+      zone.classList.remove("glow");
+    }, 100); // adjust timing if needed
   }
 
   //const date = new Date().toLocaleDateString();
