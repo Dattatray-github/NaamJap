@@ -649,8 +649,24 @@ function openChant(name) {
   save();
   //renderHome();
   //renderAnalytics();
-  openChant(name);
+  //openChant(name);
+    updateStatsUI(name);
   }
+  
+function updateStatsUI(name) {
+  const stats = document.querySelector(".stats-card");
+  if (!stats) return;
+
+  stats.innerHTML = `
+    <div class="naam-title">Progress</div>
+    <div class="naam-count">
+      Today: ${state.counts[name].today} ${getMala(state.counts[name].today)}
+    </div>
+    <div class="naam-count">
+      Total: ${state.counts[name].total} ${getMala(state.counts[name].total)}
+    </div>
+  `;
+}
 
 
 function chant(name) {
@@ -671,9 +687,10 @@ function chant(name) {
   save();
 
   // Allow glow to be visible before re-render
-  setTimeout(() => {
-    openChant(name);
-  }, 100);
+  //setTimeout(() => {
+    //openChant(name);
+  //}, 100);
+  updateStatsUI(name);
   }
   
 
