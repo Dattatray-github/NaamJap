@@ -893,15 +893,24 @@ function exportData() {
   a.download = "naamjap-backup.json";
   a.click();
 }
+
 function importData(event) {
   const file = event.target.files[0];
   const reader = new FileReader();
 
   reader.onload = function(e) {
     const data = JSON.parse(e.target.result);
-    localStorage.setItem("naamjap", JSON.stringify(data));
+
+    if (!data.counts || !data.analytics) {
+      alert("Invalid backup file");
+      return;
+    }
+
+    state = data;   // ✅ CRITICAL FIX
+    save();         // ✅ sync storage
+
     alert("Data restored successfully!");
-    location.reload();
+    renderHome();   // ✅ update UI
   };
 
   reader.readAsText(file);
