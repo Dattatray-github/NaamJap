@@ -555,11 +555,21 @@ let todayDate = getLocalDate();
   
 
 /* normalize old data */
+
 Object.keys(naamData).forEach(n => {
-  if (typeof state.counts[n] === "number") {
-    state.counts[n] = { today: 0, total: state.counts[n] };
-  }
-  if (!state.counts[n]) {
+  const existing = state.counts[n];
+
+  if (typeof existing === "number") {
+    state.counts[n] = { today: 0, total: existing };
+  } else if (
+    typeof existing === "object" &&
+    existing !== null &&
+    "total" in existing &&
+    "today" in existing
+  ) {
+    // ✅ already correct → DO NOTHING
+  } else {
+    // ✅ only create if truly missing
     state.counts[n] = { today: 0, total: 0 };
   }
 });
