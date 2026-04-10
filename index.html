@@ -438,32 +438,6 @@ select option {
 
 <div id="analytics" class="page">
 <h3>Analytics</h3>
-  
-<!--  <div class="naam-card">
-
-  <label>Select Year</label>
-  <select id="yearSelect"></select>
-
-  <label>Select Month</label>
-  <select id="monthSelect">
-    <option value="0">Jan</option>
-    <option value="1">Feb</option>
-    <option value="2">Mar</option>
-    <option value="3">Apr</option>
-    <option value="4">May</option>
-    <option value="5">Jun</option>
-    <option value="6">Jul</option>
-    <option value="7">Aug</option>
-    <option value="8">Sep</option>
-    <option value="9">Oct</option>
-    <option value="10">Nov</option>
-    <option value="11">Dec</option>
-  </select>
-
-  <canvas id="monthlyChart" height="120"></canvas>
-
-  </div>
--->
 <table>
 <thead>
 <tr><th>Date</th><th>Naam</th><th>Count</th></tr>
@@ -488,6 +462,20 @@ select option {
 <button onclick="exportData()">Export Data</button>
 <button >Import Data</button>
 <input type="file" onchange="importData(event)">
+
+<br><br>
+<hr>
+<br>
+
+<h3>Manual Entry</h3>
+<label>Select Naam</label>
+<select id="manualNaam"></select>
+<label>Select Date</label>
+<input type="date" id="manualDate">
+<label>Enter Count</label>
+<input type="number" id="manualCount" placeholder="Enter count">
+
+<button onclick="addManualEntry()">Add Entry</button>
 
 <br><br>
 <hr>
@@ -930,6 +918,51 @@ function importData(event) {
 
   reader.readAsText(file);
 }
+
+function populateManualNaam() {
+  const select = document.getElementById("manualNaam");
+  select.innerHTML = "";
+
+  Object.keys(naamData).forEach(n => {
+    select.innerHTML += `<option value="${n}">${n}</option>`;
+  });
+}
+
+populateManualNaam();
+
+function addManualEntry() {
+  const name = document.getElementById("manualNaam").value;
+  const date = document.getElementById("manualDate").value;
+  const count = parseInt(document.getElementById("manualCount").value);
+
+  if (!name || !date || isNaN(count) || count <= 0) {
+    alert("Please fill all fields correctly");
+    return;
+  }
+
+  // Update totals
+  state.counts[name].total += count;
+
+  // Update today only if same date
+  if (date === getLocalDate()) {
+    state.counts[name].today += count;
+  }
+
+  // Add analytics
+  state.analytics.push({
+    date,
+    name,
+    count
+  });
+
+  save();
+
+  alert("Entry added successfully");
+
+  // Optional UI refresh
+  renderHome();
+}
+
   
 </script>
   
